@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jonathan Zhu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0e0f11;
+      --surface:  #16181c;
+      --border:   #252830;
+      --muted:    #4a4f5e;
+      --body:     #9aa0b2;
+      --heading:  #e8eaf0;
+      --accent:   #c8a96e;
+      --accent2:  #6e8ec8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(200,169,110,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(110,142,200,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 48px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .avatar-placeholder {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      color: var(--heading);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .bio {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--body);
+      max-width: 480px;
+    }
+
+    .bio p + p {
+      margin-top: 12px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      margin: 32px 0;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.15s forwards;
+    }
+
+    /* ── Cards ── */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.25s, transform 0.25s, background 0.25s;
+      opacity: 0;
+      transform: translateY(16px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,169,110,0.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      background: #1a1c21;
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card.accent2:hover { border-color: var(--accent2); }
+    .card.accent2::before {
+      background: linear-gradient(135deg, rgba(110,142,200,0.05) 0%, transparent 60%);
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.25s;
+    }
+
+    .card:hover .card-icon { background: rgba(200,169,110,0.12); }
+    .card.accent2:hover .card-icon { background: rgba(110,142,200,0.12); }
+
+    .card-icon svg { width: 18px; height: 18px; }
+
+    .card-text { flex: 1; }
+
+    .card-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--heading);
+      margin-bottom: 2px;
+      letter-spacing: 0.01em;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .card-arrow {
+      color: var(--muted);
+      transition: color 0.25s, transform 0.25s;
+      font-size: 16px;
+    }
+
+    .card:hover .card-arrow {
+      color: var(--accent);
+      transform: translateX(3px);
+    }
+
+    .card.accent2:hover .card-arrow { color: var(--accent2); }
+
+    /* stagger animations */
+    .card:nth-child(1) { animation: fadeUp 0.6s ease 0.25s forwards; }
+    .card:nth-child(2) { animation: fadeUp 0.6s ease 0.35s forwards; }
+    .card:nth-child(3) { animation: fadeUp 0.6s ease 0.45s forwards; }
+    .card:nth-child(4) { animation: fadeUp 0.6s ease 0.55s forwards; }
+
+    /* ── Coming soon badge ── */
+    .badge {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(200,169,110,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 40px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.7s forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <div class="header">
+      <div class="header-top">
+        <img src="./avatar.jpg" alt="Jonathan Zhu" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="avatar-placeholder" style="display:none">JZ</div>
+        <h1 class="name">Jonathan<br><em>Zhu</em></h1>
+      </div>
+      <div class="bio">
+        <p>
+          Data engineer by trade. Twelve years across Citi, JPMorgan, and Standard Chartered,
+          sitting at the intersection of regulatory requirements and technical implementation —
+          reading what the rules demand, designing the architecture to handle it, and building
+          it end-to-end.
+        </p>
+        <p>
+          I'm also a curious observer of the world around me. Since moving to Singapore,
+          I've been quietly taking notes — on the city, the culture, the texture of daily life
+          that doesn't make the headlines. That notebook became <em>南洋杂记</em>, a Substack
+          column on what it means to live in, and pay attention to, this particular corner of
+          the world.
+        </p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="cards">
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#c8a96e">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+          </svg>
+        </div>
+        <div class="card-text">
+          <div class="card-label">LinkedIn</div>
+          <div class="card-desc">Experience, background & writing</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- CV Download -->
+      <a href="./Jonathan_Zhu_CV_EN_20260305.docx" download class="card accent2">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#6e8ec8">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <polyline points="9 15 12 18 15 15"/>
+          </svg>
+        </div>
+        <div class="card-text">
+          <div class="card-label">Résumé</div>
+          <div class="card-desc">Download CV · Updated March 2026</div>
+        </div>
+        <span class="card-arrow">↓</span>
+      </a>
+
+      <!-- GitHub -->
+      <a href="https://github.com/YOUR_USERNAME" target="_blank" rel="noopener" class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#c8a96e">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </div>
+        <div class="card-text">
+          <div class="card-label">Portfolio</div>
+          <div class="card-desc">China Regulatory Reporting Automation & more</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- Substack -->
+      <a href="https://substack.com/@YOUR_HANDLE" target="_blank" rel="noopener" class="card accent2">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#6e8ec8">
+            <path d="M4 4h16v2.5H4zM4 11h16M4 15.5l8 4.5 8-4.5V11H4v4.5z"/>
+          </svg>
+        </div>
+        <div class="card-text">
+          <div class="card-label">Substack <span class="badge">Coming soon</span></div>
+          <div class="card-desc">南洋杂记 · Observations on Singapore life</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+
+    <p class="footer">Singapore · Open to opportunities</p>
+
+  </div>
+</body>
+</html>
