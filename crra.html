@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRRA — Jonathan Zhu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0e0f11;
+      --surface: #16181c;
+      --border:  #252830;
+      --muted:   #4a4f5e;
+      --body:    #9aa0b2;
+      --heading: #e8eaf0;
+      --accent:  #c8a96e;
+      --accent2: #6e8ec8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── Ambient glows ── */
+    .glow-top {
+      position: fixed; top: -200px; left: 30%; width: 700px; height: 700px;
+      background: radial-gradient(ellipse, rgba(200,169,110,0.05) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+    .glow-right {
+      position: fixed; bottom: 10%; right: -15%; width: 500px; height: 500px;
+      background: radial-gradient(ellipse, rgba(110,142,200,0.04) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(14,15,17,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(2px);
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    .nav-label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Layout ── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 32px 120px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding-top: 140px;
+      padding-bottom: 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+      opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+    .hero-eyebrow::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      max-width: 80px;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 7vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--heading);
+      margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+
+    .hero-subtitle {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--body);
+      max-width: 600px;
+      margin-bottom: 48px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+    .stat {}
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--heading);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-number span { color: var(--accent); }
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Sections ── */
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-tag .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      color: var(--heading);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    p { margin-bottom: 16px; font-size: 15.5px; }
+    p:last-child { margin-bottom: 0; }
+
+    strong { color: var(--heading); font-weight: 500; }
+
+    /* ── Pull quote ── */
+    .pull-quote {
+      border-left: 2px solid var(--accent);
+      padding: 4px 0 4px 24px;
+      margin: 32px 0;
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: var(--heading);
+    }
+
+    /* ── Principle cards ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 32px;
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .step:hover { border-color: var(--muted); }
+    .step.open { border-color: var(--accent); }
+
+    .step-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px;
+    }
+
+    .step-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--accent);
+      width: 24px; flex-shrink: 0;
+    }
+
+    .step-title-text {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--heading);
+      letter-spacing: 0.01em;
+    }
+
+    .step-chevron {
+      color: var(--muted);
+      font-size: 12px;
+      transition: transform 0.3s;
+    }
+    .step.open .step-chevron { transform: rotate(180deg); }
+
+    .step-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 22px;
+      font-size: 14.5px;
+      color: var(--body);
+      line-height: 1.75;
+      border-top: 0px solid var(--border);
+    }
+    .step.open .step-body {
+      max-height: 300px;
+      padding: 0 22px 18px;
+      border-top-width: 1px;
+      padding-top: 16px;
+    }
+
+    .step-lesson {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    /* ── Decision cards ── */
+    .decisions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    @media (max-width: 560px) { .decisions { grid-template-columns: 1fr; } }
+
+    .decision {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .decision::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, var(--accent2), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .decision:hover { border-color: var(--accent2); transform: translateY(-2px); }
+    .decision:hover::before { opacity: 1; }
+
+    .decision-q {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .decision-choice {
+      font-weight: 500;
+      color: var(--heading);
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+    .decision-why {
+      font-size: 13.5px;
+      color: var(--body);
+      line-height: 1.65;
+    }
+
+    /* ── Metrics ── */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 32px;
+    }
+    @media (max-width: 520px) { .metrics { grid-template-columns: 1fr 1fr; } }
+
+    .metric {
+      background: var(--surface);
+      padding: 28px 24px;
+    }
+    .metric-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: var(--heading);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .metric-value .unit { font-size: 1.2rem; color: var(--accent); }
+    .metric-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+    }
+
+    /* ── Architecture visual ── */
+    .arch-diagram {
+      margin-top: 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .arch-diagram::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(110,142,200,0.04) 0%, transparent 60%);
+    }
+
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    .arch-layer-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .arch-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .arch-node {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .arch-node.source {
+      background: rgba(74,79,94,0.3);
+      border: 1px solid #3a3f50;
+      color: var(--body);
+    }
+    .arch-node.model {
+      background: rgba(39,80,51,0.4);
+      border: 1px solid rgba(100,180,120,0.3);
+      color: #7dba8f;
+    }
+    .arch-node.amend {
+      background: rgba(39,64,50,0.3);
+      border: 1px solid rgba(100,160,110,0.2);
+      color: #6aab7c;
+    }
+    .arch-node.control {
+      background: rgba(30,60,100,0.4);
+      border: 1px solid rgba(110,142,200,0.3);
+      color: #8eaada;
+    }
+    .arch-node.report {
+      background: rgba(20,55,95,0.35);
+      border: 1px solid rgba(80,120,180,0.25);
+      color: #7aa0cc;
+    }
+
+    .arch-connector {
+      display: flex; align-items: center;
+      padding: 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .arch-divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 8px 0;
+    }
+
+    .arch-caption {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .arch-legend {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .arch-dot {
+      width: 8px; height: 8px; border-radius: 2px;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 72px 0 0;
+    }
+
+    .cta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+    }
+
+    .cta-text {}
+    .cta-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--heading);
+      margin-bottom: 8px;
+    }
+    .cta-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .cta-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      transform: translateY(-1px);
+    }
+    .cta-btn svg { width: 15px; height: 15px; }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 48px 0 32px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      position: relative; z-index: 1;
+    }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="glow-top"></div>
+<div class="glow-right"></div>
+
+<nav>
+  <a href="./index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+    Jonathan Zhu
+  </a>
+  <span class="nav-label">Case Study</span>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">China Regulatory Reporting Automation</div>
+    <h1 class="hero-title">The system that<br>outlived its <em>creator</em></h1>
+    <p class="hero-subtitle">
+      900+ regulatory reports. Two frameworks. One engineer. Three months.
+      This is not a story about a system that was built — it's about the thinking
+      that made it survivable.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">900<span>+</span></div>
+        <div class="stat-label">Reports automated</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Months to deliver</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3<span>+</span></div>
+        <div class="stat-label">FTE saved monthly</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Disruption on handover</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="reveal">
+    <div class="section-tag"><span class="num">01</span> The Problem</div>
+    <h2 class="section-title">An industry that throws<br><em>people</em> at structural failures</h2>
+    <p>
+      Every major international bank operating in China faces the same challenge:
+      NFRA and PBOC — two regulators with overlapping but inconsistent frameworks,
+      hundreds of reports per submission cycle, and source data never designed with
+      regulatory logic in mind.
+    </p>
+    <p>
+      The default response has always been headcount. More people, more manual checks,
+      more spreadsheet gymnastics. This works until it doesn't — and when it fails,
+      it fails at 11pm before a submission deadline.
+    </p>
+    <div class="pull-quote">
+      Most reporting systems in this space were never architected. They accumulated.
+    </div>
+    <p>
+      Business data and regulatory logic living in the same tables. Validation entirely manual.
+      Every change requiring IT involvement. Every error requiring the one person who
+      knows where the bodies are buried. <strong>When that person leaves, the system doesn't
+      slow down. It stops.</strong>
+    </p>
+    <p>
+      This is not an execution problem. It's an architecture problem. Fixing the execution
+      buys months. Redesigning the architecture buys years.
+    </p>
+  </section>
+
+  <!-- PRINCIPLE -->
+  <section class="reveal">
+    <div class="section-tag"><span class="num">02</span> The Principle</div>
+    <h2 class="section-title">Borrowed from <em>aerospace</em>,<br>applied to banking</h2>
+    <p>
+      Banks and SpaceX's engineering philosophy seem like they belong in different universes.
+      One moves in decades. The other moves in weeks. But in 2022, Musk's five-step process
+      became the blueprint for rebuilding a regulatory reporting system — in strict order,
+      with one discipline: <strong>never skip ahead to automation.</strong>
+    </p>
+
+    <div class="steps">
+
+      <div class="step" onclick="toggleStep(this)">
+        <div class="step-header">
+          <span class="step-num">1</span>
+          <span class="step-title-text">Make the requirements less dumb</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-body">
+          In banks, requirements accumulate like sediment. A senior stakeholder asked for
+          a trigger to regenerate a single branch's reports independently — a reasonable fear,
+          but the wrong solution. Selective reruns would have introduced exactly the data
+          inconsistency the system was built to eliminate. The trigger was never built.
+          Six months later, nobody asked about it again.
+          <div class="step-lesson">Most requirements are answers to fears, not solutions to problems. Find the fear first.</div>
+        </div>
+      </div>
+
+      <div class="step" onclick="toggleStep(this)">
+        <div class="step-header">
+          <span class="step-num">2</span>
+          <span class="step-title-text">Delete the process step</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-body">
+          The original system had over a dozen manual maintenance spreadsheets —
+          each a workaround for a different data quality problem, each a single point of failure.
+          They were replaced with six standardised configuration tables. Not because six
+          is better than twelve, but because most of those spreadsheets existed to compensate
+          for problems fixable upstream, or edge cases that had stopped occurring years ago.
+          <div class="step-lesson">Workarounds accumulate faster than problems get solved. Deletion requires courage, not just analysis.</div>
+        </div>
+      </div>
+
+      <div class="step" onclick="toggleStep(this)">
+        <div class="step-header">
+          <span class="step-num">3</span>
+          <span class="step-title-text">Simplify or optimise</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-body">
+          The core architecture is a 3+6 data model: three tables for business data,
+          six for regulatory logic. The two layers never touch directly. When regulators
+          changed requirements, changes stayed in the adjustment tables. Core data was
+          never touched. No IT involvement, no code changes, no waiting.
+          <div class="step-lesson">Simplification isn't subtraction. Done right, it's multiplication.</div>
+        </div>
+      </div>
+
+      <div class="step" onclick="toggleStep(this)">
+        <div class="step-header">
+          <span class="step-num">4</span>
+          <span class="step-title-text">Accelerate cycle time</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-body">
+          Accelerating cycle time isn't about moving faster — it's about finding out
+          what's wrong sooner. Run the entire pipeline with actual production data,
+          under actual deadline pressure. Every major issue in this system was found this way.
+          The cycle compressed every time, not because the system got luckier, but because
+          each failure made the next fix faster.
+          <div class="step-lesson">Shorten the distance between "something is wrong" and "it's fixed."</div>
+        </div>
+      </div>
+
+      <div class="step" onclick="toggleStep(this)">
+        <div class="step-header">
+          <span class="step-num">5</span>
+          <span class="step-title-text">Automate</span>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-body">
+          Automation is the last step, not the first. Automate a flawed process and you
+          get a faster flawed process. Automate a simplified, tested, clean process and
+          you get something that compounds. By the sixth month, the team had stopped
+          thinking about it as a system they were managing and started thinking about
+          it as infrastructure.
+          <div class="step-lesson">Automate to lock in everything you've already fixed. Success is when nobody has to think about it anymore.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DECISIONS -->
+  <section class="reveal">
+    <div class="section-tag"><span class="num">03</span> Key Decisions</div>
+    <h2 class="section-title">Every choice had a<br><em>why</em></h2>
+    <p>
+      Architecture is a record of decisions, not components. The ones below weren't
+      the obvious choices — each had a cleaner-looking alternative that was rejected
+      for reasons that only make sense when you think about who maintains the system
+      two years later.
+    </p>
+
+    <div class="arch-diagram reveal">
+      <div style="position:relative">
+        <div class="arch-layer-label">Bank Data Warehouse</div>
+        <div class="arch-row" style="margin-bottom:14px">
+          <div class="arch-node source">Bank General Data Model</div>
+          <div class="arch-node source">Transaction Process System</div>
+        </div>
+        <hr class="arch-divider">
+        <div class="arch-layer-label" style="margin-top:12px">CRRA Data Model (3+6)</div>
+        <div class="arch-row" style="margin-bottom:8px">
+          <div class="arch-node model">Corp Cust</div>
+          <div class="arch-node model">Corp Loan</div>
+          <div class="arch-node model">Indiv Loan</div>
+          <div class="arch-node amend">Corp Cust Amend</div>
+          <div class="arch-node amend">Corp Loan Amend</div>
+          <div class="arch-node amend">Indiv Loan Amend</div>
+          <div class="arch-node amend">SP Industry</div>
+          <div class="arch-node amend">SP CustID</div>
+          <div class="arch-node amend">SP Deal</div>
+        </div>
+        <hr class="arch-divider">
+        <div class="arch-layer-label" style="margin-top:12px">Low Code Environment</div>
+        <div class="arch-row">
+          <div class="arch-node control">Auto Query</div>
+          <div class="arch-node control">Data Quality Control</div>
+          <div class="arch-node control">Data Service</div>
+          <div class="arch-node control">Manual Amend</div>
+          <div class="arch-node report">NFRA Report Module</div>
+          <div class="arch-node report">PBOC Report Module</div>
+          <div class="arch-node report">Regional Report Module</div>
+        </div>
+        <div class="arch-caption">
+          <div class="arch-legend"><div class="arch-dot" style="background:#7dba8f"></div>Core tables</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#6aab7c; opacity:0.7"></div>Amend tables</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#8eaada"></div>Control module</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#7aa0cc; opacity:0.8"></div>Report modules</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="decisions" style="margin-top:28px">
+
+      <div class="decision">
+        <div class="decision-q">The question</div>
+        <div class="decision-choice">Low-code over Python</div>
+        <div class="decision-why">
+          Python was rejected not for skill reasons, but because of what Python-based
+          systems look like to the people who inherit them. Finance business users
+          with no technical background learned to maintain parts of this system themselves.
+          That's the difference between a system that outlives its creator and one that doesn't.
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-q">The question</div>
+        <div class="decision-choice">Mirror tables over exception systems</div>
+        <div class="decision-why">
+          A purpose-built exception system would have been cleaner — and would have required
+          IT to build and maintain it. Mirror tables are instantly understandable to anyone
+          who knows the core tables. When upstream data fails at 11pm, the mirror table
+          is the difference between a crisis and a workaround.
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-q">The question</div>
+        <div class="decision-choice">Star schema for corporate loans</div>
+        <div class="decision-why">
+          Customer attributes change infrequently. Loan transactions change constantly.
+          Keeping them in separate tables means customer updates propagate automatically
+          without touching transaction records, and queries don't carry weight they don't need.
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-q">The question</div>
+        <div class="decision-choice">PII collapsed into transaction table</div>
+        <div class="decision-why">
+          An individual customer table would have been architecturally cleaner. It would
+          also have created a centralised, queryable store of personal identity data —
+          a liability that serves no operational purpose. Denormalisation here was a
+          deliberate risk reduction choice.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="reveal">
+    <div class="section-tag"><span class="num">04</span> The Result</div>
+    <h2 class="section-title">Metrics as evidence,<br>not <em>headline</em></h2>
+    <p>
+      The numbers are real. But they're not the point — they're proof that the
+      methodology worked. The more interesting outcomes are the ones that don't
+      fit in a table.
+    </p>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">3<span class="unit">mo</span></div>
+        <div class="metric-label">Delivery timeline</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">3<span class="unit">+</span></div>
+        <div class="metric-label">FTE saved monthly</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">48<span class="unit">hr</span></div>
+        <div class="metric-label">Earlier submission</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">40<span class="unit">%</span></div>
+        <div class="metric-label">Complexity reduction</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">100<span class="unit">%</span></div>
+        <div class="metric-label">Automated validation</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">0</div>
+        <div class="metric-label">Disruption on handover</div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+      <p>
+        The system was adopted as the standard template for all future Finance regulatory
+        reporting automation within the bank — extending beyond loans into a full cross-business
+        framework. A long-standing reconciliation failure between NFRA 1104 and EAST reports
+        was resolved as a byproduct of shared data lineage.
+      </p>
+      <p>
+        When the low-code platform was later discontinued for political reasons, the engineering
+        team didn't revert to manual processes. <strong>They went looking for another tool to keep
+        working the same way.</strong>
+      </p>
+      <div class="pull-quote">
+        The system outlived its creator. Then it outlived its platform.
+        The methodology is still running.
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section reveal">
+    <div class="cta-box">
+      <div class="cta-text">
+        <div class="cta-title">Architecture & design decisions</div>
+        <div class="cta-desc">Full technical documentation — data model, pipeline components, Q&A</div>
+      </div>
+      <a href="https://github.com/YOUR_USERNAME/YOUR_REPO" target="_blank" rel="noopener" class="cta-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+        </svg>
+        View on GitHub
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="./index.html">← Jonathan Zhu</a> &nbsp;·&nbsp; Singapore
+</footer>
+
+<script>
+  // Step accordion
+  function toggleStep(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
