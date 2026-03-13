@@ -12,17 +12,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #0e0f11;
-      --surface: #16181c;
-      --border:  #252830;
-      --muted:   #4a4f5e;
-      --body:    #9aa0b2;
-      --heading: #e8eaf0;
-      --accent:  #c8a96e;
-      --accent2: #6e8ec8;
+      --bg:        #0e0f11;
+      --card:      #1a1d24;
+      --card-hi:   #21252e;
+      --border:    #2e3340;
+      --muted:     #6b7280;
+      --body:      #c4c9d6;
+      --heading:   #eceef3;
+      --accent:    #c8a96e;
+      --accent2:   #6e8ec8;
     }
 
-    html, body { height: 100%; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -31,384 +32,383 @@
       font-weight: 300;
       line-height: 1.8;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    /* ── Ambient glows ── */
     body::before {
       content: '';
-      position: fixed; top: -15%; left: 20%;
-      width: 600px; height: 600px;
-      background: radial-gradient(ellipse, rgba(200,169,110,0.055) 0%, transparent 65%);
+      position: fixed; top: -15%; left: 15%;
+      width: 700px; height: 700px;
+      background: radial-gradient(ellipse, rgba(200,169,110,0.06) 0%, transparent 65%);
       pointer-events: none; z-index: 0;
     }
     body::after {
       content: '';
-      position: fixed; bottom: 0; right: -10%;
+      position: fixed; bottom: 5%; right: -10%;
       width: 500px; height: 500px;
-      background: radial-gradient(ellipse, rgba(110,142,200,0.045) 0%, transparent 65%);
+      background: radial-gradient(ellipse, rgba(110,142,200,0.04) 0%, transparent 65%);
       pointer-events: none; z-index: 0;
     }
 
-    /* ── Layout ── */
-    .layout {
+    .outer {
       position: relative; z-index: 1;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      grid-template-rows: 1fr auto;
-      max-width: 1100px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 0 48px;
-      gap: 0 64px;
+      padding: 60px 40px 80px;
     }
 
-    /* ── Left: intro ── */
-    .intro {
-      padding: 80px 0 64px;
+    .layout {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      gap: 20px;
     }
 
-    .avatar-row {
+    @media (min-width: 900px) {
+      .outer { padding: 72px 56px 96px; }
+      .layout {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      .card-col {
+        flex: 0 0 320px;
+        position: sticky;
+        top: 60px;
+      }
+      .about-col { flex: 1; min-width: 0; }
+    }
+
+    /* ── Shared card shell ── */
+    .card-shell {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ══════════════════════════
+       BUSINESS CARD
+    ══════════════════════════ */
+    .card-col {
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.05s forwards;
+    }
+
+    .biz-top {
+      padding: 32px 28px 26px;
       display: flex;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 36px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.05s forwards;
+      gap: 22px;
     }
 
+    .avatar-wrap { position: relative; flex-shrink: 0; }
+
     .avatar {
-      width: 72px; height: 72px;
+      width: 96px; height: 96px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--accent);
-      flex-shrink: 0;
+      border: 2.5px solid var(--accent);
+      display: block;
     }
     .avatar-placeholder {
-      width: 72px; height: 72px;
+      width: 96px; height: 96px;
       border-radius: 50%;
-      background: var(--surface);
-      border: 2px solid var(--accent);
+      background: var(--card-hi);
+      border: 2.5px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
       color: var(--accent);
       font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      flex-shrink: 0;
+      font-size: 26px;
+    }
+    .avatar-ring {
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(200,169,110,0.2);
+      pointer-events: none;
     }
 
-    .name {
+    .biz-name {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+      font-size: 2rem;
       color: var(--heading);
-      line-height: 1.05;
+      line-height: 1.1;
       letter-spacing: -0.02em;
+      margin-bottom: 9px;
     }
-    .name em { font-style: italic; color: var(--accent); }
+    .biz-name em { font-style: italic; color: var(--accent); }
 
-    .intro-body {
-      font-size: 15.5px;
+    .biz-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .biz-title-item {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--heading);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .biz-title-sep {
+      font-size: 11px;
+      color: var(--border);
+      margin: 0 6px;
+      user-select: none;
+    }
+
+    /* ── Row-style link buttons ── */
+    .biz-links {
+      padding: 14px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .biz-link {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 11px 12px 11px 10px;
+      border-radius: 9px;
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--body);
+      font-size: 13.5px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      position: relative;
+    }
+    .biz-link::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 22%; bottom: 22%;
+      width: 2px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .biz-link.blue::after { background: var(--accent2); }
+
+    .biz-link:hover {
+      background: var(--card-hi);
+      border-color: var(--border);
+      color: var(--heading);
+    }
+    .biz-link:hover::after { opacity: 1; }
+
+    .biz-link-icon {
+      width: 30px; height: 30px;
+      border-radius: 7px;
+      background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .biz-link:hover .biz-link-icon { background: rgba(200,169,110,0.12); }
+    .biz-link.blue:hover .biz-link-icon { background: rgba(110,142,200,0.1); }
+    .biz-link-icon svg { width: 14px; height: 14px; }
+
+    .biz-link-label { flex: 1; }
+
+    .biz-link-arrow {
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .biz-link:hover .biz-link-arrow {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+
+    /* ══════════════════════════
+       ABOUT CARD
+    ══════════════════════════ */
+    .about-col {
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.15s forwards;
+    }
+
+    .about-card {
+      padding: 32px 36px 36px;
+    }
+
+    .about-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .about-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(200,169,110,0.4), transparent);
+    }
+
+    .about-body {
+      font-size: 15px;
       line-height: 1.85;
       color: var(--body);
-      max-width: 560px;
     }
-
-    .intro-body p {
-      opacity: 0;
-      animation: fadeUp 0.65s ease forwards;
-    }
-    .intro-body p:nth-child(1) { animation-delay: 0.15s; }
-    .intro-body p:nth-child(2) { animation-delay: 0.25s; }
-    .intro-body p:nth-child(3) { animation-delay: 0.35s; }
-    .intro-body p:nth-child(4) { animation-delay: 0.45s; }
-    .intro-body p:nth-child(5) { animation-delay: 0.55s; }
-
-    .intro-body p + p { margin-top: 18px; }
-
-    .intro-body strong { color: var(--heading); font-weight: 500; }
-
-    .intro-body a {
+    .about-body p { margin-bottom: 18px; }
+    .about-body p:last-child { margin-bottom: 0; }
+    .about-body strong { color: var(--heading); font-weight: 500; }
+    .about-body a {
       color: var(--accent2);
       text-decoration: none;
       border-bottom: 1px solid rgba(110,142,200,0.3);
       transition: border-color 0.2s, color 0.2s;
     }
-    .intro-body a:hover {
+    .about-body a:hover {
       color: var(--heading);
       border-bottom-color: var(--heading);
     }
 
-    /* ── Right: cards ── */
-    .sidebar {
-      padding: 80px 0 64px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      border-left: 1px solid var(--border);
-      padding-left: 64px;
-    }
-
-    .sidebar-label {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.3s forwards;
-    }
-
-    .cards {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.22s, transform 0.22s, background 0.22s;
-      opacity: 0;
-      transform: translateY(12px);
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(200,169,110,0.04) 0%, transparent 60%);
-      opacity: 0; transition: opacity 0.25s;
-    }
-    .card:hover { border-color: var(--accent); transform: translateY(-2px); background: #1a1c21; }
-    .card:hover::before { opacity: 1; }
-    .card.blue:hover { border-color: var(--accent2); }
-    .card.blue::before { background: linear-gradient(135deg, rgba(110,142,200,0.05) 0%, transparent 60%); }
-
-    .card:nth-child(1) { animation: fadeUp 0.6s ease 0.4s forwards; }
-    .card:nth-child(2) { animation: fadeUp 0.6s ease 0.5s forwards; }
-    .card:nth-child(3) { animation: fadeUp 0.6s ease 0.6s forwards; }
-    .card:nth-child(4) { animation: fadeUp 0.6s ease 0.7s forwards; }
-
-    .card-icon {
-      width: 36px; height: 36px;
-      border-radius: 7px;
-      background: var(--border);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.22s;
-    }
-    .card:hover .card-icon { background: rgba(200,169,110,0.12); }
-    .card.blue:hover .card-icon { background: rgba(110,142,200,0.12); }
-    .card-icon svg { width: 16px; height: 16px; }
-
-    .card-text { flex: 1; min-width: 0; }
-    .card-label {
-      font-size: 13px; font-weight: 500;
-      color: var(--heading);
-      letter-spacing: 0.01em;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .card-desc { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
-
-    .card-arrow {
-      color: var(--muted);
-      font-size: 14px;
-      transition: color 0.22s, transform 0.22s;
-      flex-shrink: 0;
-    }
-    .card:hover .card-arrow { color: var(--accent); transform: translateX(3px); }
-    .card.blue:hover .card-arrow { color: var(--accent2); }
-
-    .badge {
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: rgba(200,169,110,0.1);
-      color: var(--accent);
-      border: 1px solid rgba(200,169,110,0.2);
-      border-radius: 3px;
-      padding: 1px 6px;
-      font-weight: 500;
-    }
-
-    /* ── Footer row ── */
-    .footer {
-      grid-column: 1 / -1;
-      padding: 20px 0 32px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.8s forwards;
-    }
-
-    /* ── Mobile ── */
-    @media (max-width: 768px) {
-      .layout {
-        grid-template-columns: 1fr;
-        padding: 0 24px;
-        gap: 0;
-      }
-      .intro { padding: 64px 0 32px; justify-content: flex-start; }
-      .sidebar {
-        border-left: none;
-        border-top: 1px solid var(--border);
-        padding-left: 0;
-        padding-top: 40px;
-        padding-bottom: 48px;
-      }
-      .footer { grid-column: 1; }
-    }
-
     @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 899px) {
+      .outer { padding: 48px 24px 64px; }
+      .biz-top { padding: 26px 22px 22px; }
+      .about-card { padding: 24px 22px 28px; }
     }
   </style>
 </head>
 <body>
-<div class="layout">
 
-  <!-- LEFT: intro -->
-  <div class="intro">
+<div class="outer">
+  <div class="layout">
 
-    <div class="avatar-row">
-      <img src="./avatar.PNG" alt="Jonathan Zhu" class="avatar"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-      <div class="avatar-placeholder" style="display:none">JZ</div>
-      <h1 class="name">Jonathan<br><em>Zhu</em></h1>
+    <!-- ── BUSINESS CARD ── -->
+    <div class="card-col">
+      <div class="card-shell">
+
+        <div class="biz-top">
+          <div class="avatar-wrap">
+            <img src="./avatar.PNG" alt="Jonathan Zhu" class="avatar"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="avatar-placeholder" style="display:none">JZ</div>
+            <div class="avatar-ring"></div>
+          </div>
+          <div>
+            <div class="biz-name">Jonathan <em>Zhu</em></div>
+            <div class="biz-title">
+              <span class="biz-title-item">Data Engineer</span>
+              <span class="biz-title-sep">|</span>
+              <span class="biz-title-item">Data Modeling</span>
+              <span class="biz-title-sep">|</span>
+              <span class="biz-title-item">Regulatory Reporting</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="biz-links">
+
+          <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener" class="biz-link">
+            <div class="biz-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+              </svg>
+            </div>
+            <span class="biz-link-label">LinkedIn</span>
+            <span class="biz-link-arrow">→</span>
+          </a>
+
+          <a href="./Jonathan_Zhu_CV_EN_202603.pdf" download class="biz-link blue">
+            <div class="biz-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#6e8ec8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="12" y1="18" x2="12" y2="12"/>
+                <polyline points="9 15 12 18 15 15"/>
+              </svg>
+            </div>
+            <span class="biz-link-label">Résumé</span>
+            <span class="biz-link-arrow">↓</span>
+          </a>
+
+          <a href="./portfolio.html" class="biz-link">
+            <div class="biz-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+              </svg>
+            </div>
+            <span class="biz-link-label">Portfolio</span>
+            <span class="biz-link-arrow">→</span>
+          </a>
+
+        </div>
+
+      </div>
     </div>
 
-    <div class="intro-body">
-      <p>
-        Hi, I'm Jonathan Zhu. Nice to meet you.
-      </p>
-      <p>
-        I was born in Shanghai in 1989. The kind of kid who'd spend an afternoon
-        with a map, and found the news more interesting than cartoons. That hasn't changed.
-      </p>
-      <p>
-        I've spent twelve years in financial services — Citi, JPMorgan, Standard Chartered —
-        working across data engineering, regulatory reporting, and systems architecture.
-        I'm not formally trained in any of it. My understanding of technology came from
-        practice: breaking things, fixing them, finding the cleanest solution inside a set
-        of constraints. I've long believed that system failures are almost always
-        <strong>architecture problems</strong>, not execution problems. That conviction has saved
-        me considerable effort, and made me instinctively skeptical of most "solutions."
-      </p>
-      <p>
-        Wang Yangming wrote about the unity of knowledge and action. I've taken this seriously:
-        figure out what's right, then act, then think again. The answer lives in the cycle,
-        not before it.
-      </p>
-      <p>
-        Outside work, my interests aren't systematic, but they're genuine. I follow railways —
-        not just to travel on them, but to read cities and history through their lines.
-        I've followed F1 since the 2003 Austrian Grand Prix. I followed AKB48 for years —
-        less as a fan than as someone watching one of them figure out how to convert
-        cultural capital into a business. She pulled it off, in ways more interesting than
-        most business school case studies. I believe the SpaceX Mars program is less an
-        engineering project than the next reset of human civilisation. I'm interested in
-        military history, political system design, Japanese pop music, Stephen Curry's Warriors,
-        and the kind of reading you do at 3am when you can't quite explain what you're
-        looking for.
-      </p>
-      <p>
-        In the summer of 2025, I moved with my family to Singapore. It wasn't a plan I'd made
-        years in advance — but when the moment came, it made every kind of sense: a better
-        professional environment, a city that takes education seriously, and a future with more
-        open doors for my son. Arriving here only confirmed it. There's something about this
-        place — the way it's built, the way it functions, the mix of people it attracts — that
-        I find genuinely fascinating. That curiosity became
-        <a href="https://substack.com/@notesfromnanyang" target="_blank" rel="noopener">南洋杂记</a>,
-        where I write about what I notice.
-      </p>
+    <!-- ── ABOUT ── -->
+    <div class="about-col">
+      <div class="card-shell about-card">
+        <div class="about-eyebrow">About Me</div>
+        <div class="about-body">
+          <p>
+            Hi, I'm Jonathan Zhu. Nice to meet you.
+          </p>
+          <p>
+            I was born in Shanghai in 1989. The kind of kid who'd spend an afternoon
+            with a map, and found the news more interesting than cartoons. That hasn't changed.
+          </p>
+          <p>
+            I've spent twelve years in financial services — Citi, JPMorgan, Standard Chartered —
+            working across data engineering, regulatory reporting, and systems architecture.
+            I'm not formally trained in any of it. My understanding of technology came from
+            practice: breaking things, fixing them, finding the cleanest solution inside a set
+            of constraints. I've long believed that system failures are almost always
+            <strong>architecture problems</strong>, not execution problems. That conviction has saved
+            me considerable effort, and made me instinctively skeptical of most "solutions."
+          </p>
+          <p>
+            Wang Yangming wrote about the unity of knowledge and action. I've taken this seriously:
+            figure out what's right, then act, then think again. The answer lives in the cycle,
+            not before it.
+          </p>
+          <p>
+            Outside work, my interests aren't systematic, but they're genuine. I follow railways —
+            not just to travel on them, but to read cities and history through their lines.
+            I've followed F1 since the 2003 Austrian Grand Prix. I followed AKB48 for years —
+            less as a fan than as someone watching one of them figure out how to convert
+            cultural capital into a business. She pulled it off, in ways more interesting than
+            most business school case studies. I believe the SpaceX Mars program is less an
+            engineering project than the next reset of human civilisation. I'm interested in
+            military history, political system design, Japanese pop music, Stephen Curry's Warriors,
+            and the kind of reading you do at 3am when you can't quite explain what you're
+            looking for.
+          </p>
+          <p>
+            In the summer of 2025, I moved with my family to Singapore. It wasn't a plan I'd made
+            years in advance — but when the moment came, it made every kind of sense: a better
+            professional environment, a city that takes education seriously, and a future with more
+            open doors for my son. Arriving here only confirmed it. There's something about this
+            place — the way it's built, the way it functions, the mix of people it attracts — that
+            I find genuinely fascinating. That curiosity became
+            <a href="https://substack.com/@notesfromnanyang" target="_blank" rel="noopener">南洋杂记</a>,
+            where I write about what I notice.
+          </p>
+        </div>
+      </div>
     </div>
 
   </div>
-
-  <!-- RIGHT: links -->
-  <div class="sidebar">
-    <div class="sidebar-label">Find me at</div>
-    <div class="cards">
-
-      <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener" class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-            <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
-          </svg>
-        </div>
-        <div class="card-text">
-          <div class="card-label">LinkedIn</div>
-          <div class="card-desc">Experience & background</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>
-
-      <a href="./Jonathan Zhu CV EN 20260309.pdf" download class="card blue">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#6e8ec8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="12" y1="18" x2="12" y2="12"/>
-            <polyline points="9 15 12 18 15 15"/>
-          </svg>
-        </div>
-        <div class="card-text">
-          <div class="card-label">Résumé</div>
-          <div class="card-desc">Download CV · March 2026</div>
-        </div>
-        <span class="card-arrow">↓</span>
-      </a>
-
-      <a href="./crra.html" class="card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-          </svg>
-        </div>
-        <div class="card-text">
-          <div class="card-label">Portfolio</div>
-          <div class="card-desc">CRRA · Regulatory automation at scale</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>
-
-      <a href="https://substack.com/@notesfromnanyang" target="_blank" rel="noopener" class="card blue">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#6e8ec8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16v2.5H4zM4 11h16M4 15.5l8 4.5 8-4.5V11H4v4.5z"/>
-          </svg>
-        </div>
-        <div class="card-text">
-          <div class="card-label">南洋杂记 </div>
-          <div class="card-desc">Observations on Singapore life</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <span>Singapore</span>
-    <span></span>
-  </div>
-
 </div>
+
 </body>
 </html>
