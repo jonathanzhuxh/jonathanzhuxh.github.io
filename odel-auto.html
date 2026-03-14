@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CRRA — Jonathan Zhu</title>
+  <title>OD/EL Reporting Automation — Jonathan Zhu</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -125,7 +125,6 @@
       display: flex; gap: 40px; flex-wrap: wrap;
       opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
     }
-    .stat {}
     .stat-number {
       font-family: 'DM Serif Display', serif;
       font-size: 2rem;
@@ -246,7 +245,7 @@
       border-top: 0px solid var(--border);
     }
     .step.open .step-body {
-      max-height: 360px;
+      max-height: 400px;
       padding: 0 22px 24px;
       border-top-width: 1px;
       padding-top: 16px;
@@ -310,7 +309,7 @@
     /* ── Metrics ── */
     .metrics {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -355,13 +354,6 @@
       background: radial-gradient(ellipse at 30% 50%, rgba(110,142,200,0.04) 0%, transparent 60%);
     }
 
-    .arch-layers {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-    }
-
     .arch-layer-label {
       font-size: 10px;
       letter-spacing: 0.14em;
@@ -374,6 +366,7 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      margin-bottom: 14px;
     }
 
     .arch-node {
@@ -394,11 +387,6 @@
       border: 1px solid rgba(100,180,120,0.3);
       color: #7dba8f;
     }
-    .arch-node.amend {
-      background: rgba(39,64,50,0.3);
-      border: 1px solid rgba(100,160,110,0.2);
-      color: #6aab7c;
-    }
     .arch-node.control {
       background: rgba(30,60,100,0.4);
       border: 1px solid rgba(110,142,200,0.3);
@@ -409,18 +397,17 @@
       border: 1px solid rgba(80,120,180,0.25);
       color: #7aa0cc;
     }
-
-    .arch-connector {
-      display: flex; align-items: center;
-      padding: 0 8px;
-      color: var(--muted);
-      font-size: 12px;
+    .arch-node.manual {
+      background: rgba(80,50,30,0.35);
+      border: 1px solid rgba(180,130,80,0.25);
+      color: #c8a96e;
+      opacity: 0.75;
     }
 
     .arch-divider {
       border: none;
       border-top: 1px dashed var(--border);
-      margin: 8px 0;
+      margin: 8px 0 16px;
     }
 
     .arch-caption {
@@ -434,6 +421,47 @@
     }
     .arch-dot {
       width: 8px; height: 8px; border-radius: 2px;
+    }
+
+    /* ── Next case study link ── */
+    .next-link {
+      display: block;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .next-link::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .next-link:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .next-link:hover::before { opacity: 1; }
+
+    .next-link-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .next-link-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      color: var(--heading);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .next-link-desc {
+      font-size: 13.5px;
+      color: var(--body);
+      line-height: 1.65;
     }
 
     /* ── CTA ── */
@@ -460,7 +488,6 @@
       background: linear-gradient(to right, transparent, var(--accent), transparent);
     }
 
-    .cta-text {}
     .cta-title {
       font-family: 'DM Serif Display', serif;
       font-size: 1.5rem;
@@ -544,56 +571,68 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-eyebrow">Case Study</div>
-    <h1 class="hero-title">China Regulatory<br>Reporting <em>Automation</em></h1>
-    <p class="hero-subtitle" style="font-family:'DM Serif Display',serif; font-style:italic; font-size:1.15rem; color:var(--heading); margin-bottom:24px;">A case study in sustainable digitalisation</p>
+    <h1 class="hero-title">Build the model.<br>Change the <em>habit</em>.</h1>
     <p class="hero-subtitle">
-      Rebuilding a bank's entire China regulatory reporting infrastructure — from
-      fragmented spreadsheets and manual workarounds to a unified data model serving
-      two regulators across hundreds of report types. Built with a deliberate constraint:
-      every design decision had to make sense to the people who would own it after
-      the builder was gone.
+      Inheriting a broken regulatory reporting process with no documentation,
+      no SOP, and upstream data that couldn't be automated — then rebuilding it
+      from first principles, during a COVID lockdown, with no IT support and no budget.
+      The answer wasn't better tooling. It was a different relationship with time.
     </p>
   </div>
 
   <!-- PROBLEM -->
   <section class="reveal">
     <div class="section-tag"><span class="num">01</span> The Problem</div>
-    <h2 class="section-title">An industry that throws<br><em>people</em> at structural failures</h2>
+    <h2 class="section-title">Everything manual.<br>Nothing <em>documented</em>.</h2>
     <p>
-      Every major international bank operating in China faces the same challenge:
-      NFRA and PBOC — two regulators with overlapping but inconsistent frameworks,
-      hundreds of reports per submission cycle, and source data never designed with
-      regulatory logic in mind.
+      OD — overdraft facilities — and EL — entrusted loans — are two routine but
+      regulation-heavy product lines. Both carry daily, monthly, and quarterly
+      reporting obligations across two regulators: NFRA and PBOC, each with
+      their own field definitions, granularity requirements, and submission windows.
     </p>
     <p>
-      The default response has always been headcount. More people, more manual checks,
-      more spreadsheet gymnastics. This works until it doesn't — and when it fails,
-      it fails at 11pm before a submission deadline.
+      When I inherited the function, the person who had run it was gone. There was no
+      handover document. No SOP. No data dictionary. The data lived in a collection
+      of manually maintained spreadsheets, and it wasn't always clear what the numbers
+      actually represented.
     </p>
     <div class="pull-quote">
-      Most reporting systems in this space were never architected. They accumulated.
+      The process hadn't been designed. It had been survived.
     </div>
     <p>
-      Business data and regulatory logic living in the same tables. Validation entirely manual.
-      Every change requiring IT involvement. Every error requiring the one person who
-      knows where the bodies are buried. <strong>When that person leaves, the system doesn't
-      slow down. It stops.</strong>
+      Every monthly close was a six-day scramble: locating source data, cleaning it
+      by hand, reconciling it against other teams' summaries, and generating
+      submission files through a chain of manual steps that changed slightly
+      every cycle. Errors surfaced late. The checker had little to work with.
     </p>
     <p>
-      This is not an execution problem. It's an architecture problem. Fixing the execution
-      buys months. Redesigning the architecture buys years.
+      The temptation was to immediately reach for the low-code tools that had just
+      started being rolled out — Alteryx was being pushed precisely because the tech
+      department had been paralysed by COVID and couldn't deliver anything.
+      <strong>But automating an undocumented process just produces faster undocumented errors.</strong>
+      That wasn't the place to start.
     </p>
   </section>
 
   <!-- PRINCIPLE -->
   <section class="reveal">
-    <div class="section-tag"><span class="num">02</span> The Principle</div>
-    <h2 class="section-title">Borrowed from <em>aerospace</em>,<br>applied to banking</h2>
+    <div class="section-tag"><span class="num">02</span> The Methodology</div>
+    <h2 class="section-title">Don't fix month-end.<br>Fix <em>every day</em>.</h2>
     <p>
-      Banks and SpaceX's engineering philosophy seem like they belong in different universes.
-      One moves in decades. The other moves in weeks. But in 2022, Musk's five-step process
-      became the blueprint for rebuilding a regulatory reporting system — in strict order,
-      with one discipline: <strong>never skip ahead to automation.</strong>
+      The root problem wasn't the volume of work at month-end. It was that all the
+      work — and all the errors — had been allowed to accumulate there. Data cleaning
+      isn't something you do before a deadline. It's something you do continuously,
+      so that by the time the deadline arrives, there's nothing left to clean.
+    </p>
+    <div class="pull-quote">
+      A data model stays clean for the same reason a desk stays tidy:
+      not because of a big clear-out, but because nothing is left
+      to sit there overnight.
+    </div>
+    <p>
+      This shaped every design decision in the project — what to build first,
+      how to structure the daily workflow, and why the automation at the end
+      was fast to build and reliable from day one.
     </p>
 
     <div class="steps">
@@ -601,179 +640,191 @@
       <div class="step" onclick="toggleStep(this)">
         <div class="step-header">
           <span class="step-num">1</span>
-          <span class="step-title-text">Make the requirements less dumb</span>
+          <span class="step-title-text">Map the data before touching the tools</span>
           <span class="step-chevron">▼</span>
         </div>
         <div class="step-body">
-          In banks, requirements accumulate like sediment. A senior stakeholder asked for
-          a trigger to regenerate a single branch's reports independently — a reasonable fear,
-          but the wrong solution. Selective reruns would have introduced exactly the data
-          inconsistency the system was built to eliminate. The trigger was never built.
-          Six months later, nobody asked about it again.
-          <div class="step-lesson">Most requirements are answers to fears, not solutions to problems. Find the fear first.</div>
+          The first weeks produced only a document, not a workflow. OD and EL
+          data had accumulated across dozens of manually maintained spreadsheets,
+          with no shared structure and no data dictionary. Before any tooling,
+          the job was to map what the data actually represented: five layers —
+          corporate customer, loan contract, loan note, loan movement, guarantee
+          contract — and to establish that every regulatory report was a different
+          view of the same underlying structure, not a different structure.
+          <div class="step-lesson">Inherited processes carry inherited assumptions. The first deliverable is a map, not a fix.</div>
         </div>
       </div>
 
       <div class="step" onclick="toggleStep(this)">
         <div class="step-header">
           <span class="step-num">2</span>
-          <span class="step-title-text">Delete the process step</span>
+          <span class="step-title-text">Build the data model as a single source of truth</span>
           <span class="step-chevron">▼</span>
         </div>
         <div class="step-body">
-          The original system had over a dozen manual maintenance spreadsheets —
-          each a workaround for a different data quality problem, each a single point of failure.
-          They were replaced with six standardised configuration tables. Not because six
-          is better than twelve, but because most of those spreadsheets existed to compensate
-          for problems fixable upstream, or edge cases that had stopped occurring years ago.
-          <div class="step-lesson">Workarounds accumulate faster than problems get solved. Deletion requires courage, not just analysis.</div>
-          <div class="step-lesson">Workarounds accumulate faster than problems get solved. Deletion requires courage, not just analysis.</div>
+          With the map in place, the data model was built in Excel — five structured
+          layers that both OD and EL data wrote into and all downstream reports read
+          from. The model didn't know about regulators or submission formats.
+          It only knew about the business: customers, contracts, notes, movements,
+          guarantees. Regulatory logic lived in the processing layer, not the model.
+          When reporting requirements changed, only the processing layer needed updating.
+          <div class="step-lesson">A data model is the answer to one question: what is the data actually about? Everything else is derived from that answer.</div>
         </div>
       </div>
 
       <div class="step" onclick="toggleStep(this)">
         <div class="step-header">
           <span class="step-num">3</span>
-          <span class="step-title-text">Simplify or optimise</span>
+          <span class="step-title-text">Close the data every day, not every month</span>
           <span class="step-chevron">▼</span>
         </div>
         <div class="step-body">
-          The core architecture is a 3+6 data model: three tables for business data,
-          six for regulatory logic. The two layers never touch directly. When regulators
-          changed requirements, changes stayed in the adjustment tables. Core data was
-          never touched. No IT involvement, no code changes, no waiting.
-          <div class="step-lesson">Simplification isn't subtraction. Done right, it's multiplication.</div>
+          OD generates activity every working day. The daily workflow ran the same
+          steps each morning: download the source file, process it through the
+          Alteryx workflow, validate against the data model, sync. Any discrepancy
+          surfaced the same day — not thirty days later, when the original transaction
+          was harder to trace and the deadline was already close. By the time the
+          monthly trigger fired, the data had been cleaned incrementally across
+          the entire month. There was nothing left to reconcile.
+          <div class="step-lesson">Daily processing doesn't add work. It redistributes it — away from the deadline and toward the days when there's time to fix things properly.</div>
         </div>
       </div>
 
       <div class="step" onclick="toggleStep(this)">
         <div class="step-header">
           <span class="step-num">4</span>
-          <span class="step-title-text">Accelerate cycle time</span>
+          <span class="step-title-text">Automate only what is already clean</span>
           <span class="step-chevron">▼</span>
         </div>
         <div class="step-body">
-          Accelerating cycle time isn't about moving faster — it's about finding out
-          what's wrong sooner. Run the entire pipeline with actual production data,
-          under actual deadline pressure. Every major issue in this system was found this way.
-          The cycle compressed every time, not because the system got luckier, but because
-          each failure made the next fix faster.
-          <div class="step-lesson">Shorten the distance between "something is wrong" and "it's fixed."</div>
-        </div>
-      </div>
-
-      <div class="step" onclick="toggleStep(this)">
-        <div class="step-header">
-          <span class="step-num">5</span>
-          <span class="step-title-text">Automate</span>
-          <span class="step-chevron">▼</span>
-        </div>
-        <div class="step-body">
-          Automation is the last step, not the first. Automate a flawed process and you
-          get a faster flawed process. Automate a simplified, tested, clean process and
-          you get something that compounds. By the sixth month, the team had stopped
-          thinking about it as a system they were managing and started thinking about
-          it as infrastructure.
-          <div class="step-lesson">Automate to lock in everything you've already fixed. Success is when nobody has to think about it anymore.</div>
+          Monthly and quarterly automation was built last, after the daily workflow
+          was stable and the data model was consistently clean. The monthly trigger
+          reads from accumulated daily data, generates the submission file and
+          working paper, and exits. It has no error-handling logic for data quality
+          problems — because by the time it runs, those problems have already been
+          resolved. Automating a clean process is simple. Automating a dirty process
+          just produces faster dirty output.
+          <div class="step-lesson">The monthly close takes thirty minutes because three weeks of work happened before it. The automation is the easy part.</div>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- DECISIONS -->
+  <!-- ARCHITECTURE -->
   <section class="reveal">
-    <div class="section-tag"><span class="num">03</span> Key Decisions</div>
-    <h2 class="section-title">Every choice had a<br><em>why</em></h2>
+    <div class="section-tag"><span class="num">03</span> Architecture</div>
+    <h2 class="section-title">Data model first,<br><em>workflows</em> second</h2>
     <p>
-      Architecture is a record of decisions, not components. The ones below weren't
-      the obvious choices — each had a cleaner-looking alternative that was rejected
-      for reasons that only make sense when you think about who maintains the system
-      two years later.
+      The architecture follows the logic of the methodology: a stable data model at the
+      centre, with source feeds and report outputs on either side. The model doesn't change
+      when reporting requirements change. The workflows do.
     </p>
 
     <div class="arch-diagram reveal">
       <div style="position:relative">
-        <div class="arch-layer-label">Bank Data Warehouse</div>
-        <div class="arch-row" style="margin-bottom:14px">
-          <div class="arch-node source">Bank General Data Model</div>
-          <div class="arch-node source">Transaction Process System</div>
-        </div>
-        <hr class="arch-divider">
-        <div class="arch-layer-label" style="margin-top:12px">CRRA Data Model (3+6)</div>
-        <div class="arch-row" style="margin-bottom:8px">
-          <div class="arch-node model">Corp Cust</div>
-          <div class="arch-node model">Corp Loan</div>
-          <div class="arch-node model">Indiv Loan</div>
-          <div class="arch-node amend">Corp Cust Amend</div>
-          <div class="arch-node amend">Corp Loan Amend</div>
-          <div class="arch-node amend">Indiv Loan Amend</div>
-          <div class="arch-node amend">SP Industry</div>
-          <div class="arch-node amend">SP CustID</div>
-          <div class="arch-node amend">SP Deal</div>
-        </div>
-        <hr class="arch-divider">
-        <div class="arch-layer-label" style="margin-top:12px">Low Code Environment</div>
+        <div class="arch-layer-label">Source Layer</div>
         <div class="arch-row">
-          <div class="arch-node control">Auto Query</div>
-          <div class="arch-node control">Data Quality Control</div>
-          <div class="arch-node control">Data Service</div>
-          <div class="arch-node control">Manual Amend</div>
-          <div class="arch-node report">NFRA Report Module</div>
-          <div class="arch-node report">PBOC Report Module</div>
-          <div class="arch-node report">Regional Report Module</div>
+          <div class="arch-node source">OD Raw Download (daily)</div>
+          <div class="arch-node manual">EL Manual Entry</div>
+        </div>
+        <hr class="arch-divider">
+        <div class="arch-layer-label">Data Model — 5 Layers</div>
+        <div class="arch-row">
+          <div class="arch-node model">Corporate Customer</div>
+          <div class="arch-node model">Loan Contract</div>
+          <div class="arch-node model">Loan Note</div>
+          <div class="arch-node model">Loan Movement</div>
+          <div class="arch-node model">Guarantee Contract</div>
+        </div>
+        <hr class="arch-divider">
+        <div class="arch-layer-label">Alteryx Processing</div>
+        <div class="arch-row">
+          <div class="arch-node control">Daily OD Workflow</div>
+          <div class="arch-node control">Data Model Sync</div>
+          <div class="arch-node control">Validation Rules</div>
+          <div class="arch-node control">Monthly / Quarterly Trigger</div>
+        </div>
+        <hr class="arch-divider">
+        <div class="arch-layer-label">Report Output</div>
+        <div class="arch-row">
+          <div class="arch-node report">NFRA — Monthly</div>
+          <div class="arch-node report">NFRA — Quarterly</div>
+          <div class="arch-node report">PBOC — Daily</div>
+          <div class="arch-node report">PBOC — Monthly</div>
+          <div class="arch-node report">PBOC — Quarterly</div>
         </div>
         <div class="arch-caption">
-          <div class="arch-legend"><div class="arch-dot" style="background:#7dba8f"></div>Core tables</div>
-          <div class="arch-legend"><div class="arch-dot" style="background:#6aab7c; opacity:0.7"></div>Amend tables</div>
-          <div class="arch-legend"><div class="arch-dot" style="background:#8eaada"></div>Control module</div>
-          <div class="arch-legend"><div class="arch-dot" style="background:#7aa0cc; opacity:0.8"></div>Report modules</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#7dba8f"></div>Data model tables</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#8eaada"></div>Processing layer</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#7aa0cc; opacity:0.8"></div>Report outputs</div>
+          <div class="arch-legend"><div class="arch-dot" style="background:#c8a96e; opacity:0.6"></div>Manual entry (EL constraint)</div>
         </div>
       </div>
     </div>
 
-    <div class="decisions" style="margin-top:28px">
+    <p style="margin-top:28px">
+      EL data entry remained manual throughout — not by design, but by constraint.
+      The upstream system for entrusted loans had no machine-readable export.
+      Rather than block the automation on a dependency that couldn't be controlled,
+      the data model absorbed the manual input cleanly: EL data entered once, in the
+      right structure, propagated automatically to all downstream reports.
+    </p>
+  </section>
+
+  <!-- DECISIONS -->
+  <section class="reveal">
+    <div class="section-tag"><span class="num">04</span> Key Decisions</div>
+    <h2 class="section-title">Every constraint was<br>also a <em>choice</em></h2>
+    <p>
+      The most important decisions weren't about tooling. They were about
+      sequencing — what to do in what order, and what to leave undone.
+    </p>
+
+    <div class="decisions">
 
       <div class="decision">
         <div class="decision-q">The question</div>
-        <div class="decision-choice">Low-code over Python</div>
+        <div class="decision-choice">Map before building</div>
         <div class="decision-why">
-          Python was rejected not for skill reasons, but because of what Python-based
-          systems look like to the people who inherit them. Finance business users
-          with no technical background learned to maintain parts of this system themselves.
-          That's the difference between a system that outlives its creator and one that doesn't.
+          The first instinct when inheriting a broken process is to start fixing.
+          Instead, the first two weeks produced only a document: a complete map
+          of the data model and the reporting requirements. Nothing was built.
+          That map made everything built afterwards faster and more durable.
         </div>
       </div>
 
       <div class="decision">
         <div class="decision-q">The question</div>
-        <div class="decision-choice">Mirror tables over exception systems</div>
+        <div class="decision-choice">Daily accumulation over month-end batch</div>
         <div class="decision-why">
-          A purpose-built exception system would have been cleaner — and would have required
-          IT to build and maintain it. Mirror tables are instantly understandable to anyone
-          who knows the core tables. When upstream data fails at 11pm, the mirror table
-          is the difference between a crisis and a workaround.
+          Batching everything to month-end was the default because it felt like
+          less work. It wasn't — it compressed all the data problems into the
+          same 48-hour window as the submission deadline. Daily processing
+          distributes the risk across the whole month.
         </div>
       </div>
 
       <div class="decision">
         <div class="decision-q">The question</div>
-        <div class="decision-choice">Star schema for corporate loans</div>
+        <div class="decision-choice">Accept EL manual entry</div>
         <div class="decision-why">
-          Customer attributes change infrequently. Loan transactions change constantly.
-          Keeping them in separate tables means customer updates propagate automatically
-          without touching transaction records, and queries don't carry weight they don't need.
+          Automating EL source data would have required IT involvement that
+          wasn't available. Rather than block on it, the architecture treated
+          manual EL entry as a valid input layer — structured, versioned, and
+          consumed automatically by all downstream workflows.
         </div>
       </div>
 
       <div class="decision">
         <div class="decision-q">The question</div>
-        <div class="decision-choice">PII collapsed into transaction table</div>
+        <div class="decision-choice">Low-code over scripting</div>
         <div class="decision-why">
-          An individual customer table would have been architecturally cleaner. It would
-          also have created a centralised, queryable store of personal identity data —
-          a liability that serves no operational purpose. Denormalisation here was a
-          deliberate risk reduction choice.
+          Alteryx was chosen not because it was the most powerful tool,
+          but because the workflows it produced could be read and eventually
+          maintained by colleagues without programming backgrounds.
+          A system that runs without its creator is more valuable than
+          a system only its creator can run.
         </div>
       </div>
 
@@ -782,65 +833,95 @@
 
   <!-- RESULT -->
   <section class="reveal">
-    <div class="section-tag"><span class="num">04</span> The Result</div>
+    <div class="section-tag"><span class="num">05</span> The Result</div>
     <h2 class="section-title">Metrics as evidence,<br>not <em>headline</em></h2>
     <p>
-      The numbers are real. But they're not the point — they're proof that the
-      methodology worked. The more interesting outcomes are the ones that don't
-      fit in a table.
+      The headline number is a ninety-six percent reduction in processing time at month-end.
+      But that number is a consequence, not the achievement. The achievement is that
+      data problems stopped arriving at month-end at all — because the daily workflow
+      had already resolved them across the preceding thirty working days.
     </p>
 
     <div class="metrics">
       <div class="metric">
-        <div class="metric-value">900<span class="unit">+</span></div>
-        <div class="metric-label">Reports automated</div>
+        <div class="metric-value">30<span class="unit">min</span></div>
+        <div class="metric-label">Monthly close (was 6 days)</div>
       </div>
       <div class="metric">
-        <div class="metric-value">50<span class="unit">+</span></div>
-        <div class="metric-label">Dataiku components</div>
+        <div class="metric-value">6<span class="unit">+</span></div>
+        <div class="metric-label">Report types automated</div>
       </div>
       <div class="metric">
-        <div class="metric-value">3<span class="unit">mo</span></div>
-        <div class="metric-label">Delivery timeline</div>
+        <div class="metric-value">5</div>
+        <div class="metric-label">Unified data model layers</div>
       </div>
       <div class="metric">
-        <div class="metric-value">3<span class="unit">+</span></div>
-        <div class="metric-label">FTE saved monthly</div>
-      </div>
-      <div class="metric">
-        <div class="metric-value">48<span class="unit">hr</span></div>
-        <div class="metric-label">Earlier submission</div>
-      </div>
-      <div class="metric">
-        <div class="metric-value">40<span class="unit">%</span></div>
-        <div class="metric-label">Complexity reduction</div>
-      </div>
-      <div class="metric">
-        <div class="metric-value">100<span class="unit">%</span></div>
-        <div class="metric-label">Automated validation</div>
+        <div class="metric-value">2</div>
+        <div class="metric-label">Regulators served</div>
       </div>
       <div class="metric">
         <div class="metric-value">0</div>
-        <div class="metric-label">Disruption on handover</div>
+        <div class="metric-label">IT resources required</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">0</div>
+        <div class="metric-label">Month-end data surprises</div>
       </div>
     </div>
 
     <div style="margin-top:32px">
       <p>
-        The system was adopted as the standard template for all future Finance regulatory
-        reporting automation within the bank — extending beyond loans into a full cross-business
-        framework. A long-standing reconciliation failure between NFRA 1104 and EAST reports
-        was resolved as a byproduct of shared data lineage.
+        The checker's workload changed character as well as volume. Instead of
+        hunting for errors in a six-day output, they were reviewing a working paper
+        generated from a data model that had already been validated incrementally.
+        The review became confirmation rather than discovery.
       </p>
       <p>
-        When the low-code platform was later discontinued for political reasons, the engineering
-        team didn't revert to manual processes. <strong>They went looking for another tool to keep
-        working the same way.</strong>
+        The deeper outcome is harder to quantify: a data model that stays clean
+        indefinitely, because the process that feeds it treats daily hygiene as
+        the job, not month-end recovery. <strong>Sustainability isn't a property
+        of the system. It's a property of the daily habit the system enforces.</strong>
       </p>
       <div class="pull-quote">
-        The system outlived its creator. Then it outlived its platform.
-        The methodology is still running.
+        The problem wasn't that the process was manual. It was that nobody had
+        decided what the process was supposed to be.
       </div>
+    </div>
+  </section>
+
+  <!-- WHAT CAME NEXT -->
+  <section class="reveal">
+    <div class="section-tag"><span class="num">06</span> What Came Next</div>
+    <h2 class="section-title">Automation without<br><em>transfer</em> is a dependency</h2>
+    <p>
+      The handover on departure made one limitation visible. Colleagues who inherited
+      the system could run it fluently — but when something broke or needed adapting,
+      the automation was a black box to them. The system had been built to outlast
+      its creator. It hadn't been built to be understood by them.
+    </p>
+    <p>
+      That gap — between a system that runs and a team that can evolve it — became
+      the question that shaped every project that followed. Sustainable digitalisation
+      isn't just about building something robust. It's about building the capability
+      around it: documentation that explains the why, not just the what; tooling
+      choices that colleagues without technical backgrounds can read and maintain;
+      handovers that transfer ownership, not just access.
+    </p>
+    <div class="pull-quote">
+      A system only its creator can modify is not infrastructure.
+      It's a single point of failure with a better-looking dashboard.
+    </div>
+    <p>
+      The next project was designed with that lesson built in from the start.
+    </p>
+    <div style="margin-top: 32px">
+      <a href="./crra.html" class="next-link">
+        <div class="next-link-inner">
+          <div class="next-link-label">Next case study</div>
+          <div class="next-link-title">China Regulatory Reporting Automation →</div>
+          <div class="next-link-desc">A sustainable digitalisation framework applied at scale — built so the team, not the builder, owns it.</div>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -849,9 +930,9 @@
     <div class="cta-box">
       <div class="cta-text">
         <div class="cta-title">Architecture & design decisions</div>
-        <div class="cta-desc">Full technical documentation — data model, pipeline components, Q&A</div>
+        <div class="cta-desc">Full technical documentation — data model, workflow design, Q&A</div>
       </div>
-      <a href="https://github.com/jonathanzhuxh/CRRA-China-Regulatory-Reporting-Automation" target="_blank" rel="noopener" class="cta-btn">
+      <a href="https://github.com/jonathanzhuxh" target="_blank" rel="noopener" class="cta-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
         </svg>
