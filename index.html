@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonathan ZHU</title>
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -313,7 +313,7 @@
 
         <div class="biz-top">
           <div class="avatar-wrap" id="avatarWrap">
-            <img src="./avatar.PNG" alt="Jonathan Zhu" class="avatar"
+            <img src="./assets/avatar.png" alt="Jonathan Zhu" class="avatar"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
             <div class="avatar-placeholder" style="display:none">JZ</div>
             <div class="avatar-ring"></div>
@@ -343,7 +343,7 @@
             <span class="biz-link-arrow">→</span>
           </a>
 
-          <a href="./Jonathan_Zhu_CV_EN_202603.pdf" download class="biz-link blue">
+          <a href="./assets/Jonathan_Zhu_CV_EN_202603.pdf" download class="biz-link blue">
             <div class="biz-link-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="#6e8ec8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -356,7 +356,7 @@
             <span class="biz-link-arrow">↓</span>
           </a>
 
-          <a href="./portfolio.html" class="biz-link">
+          <a href="./public/portfolio.html" class="biz-link">
             <div class="biz-link-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -450,7 +450,7 @@
   (function () {
     const wrap    = document.getElementById('avatarWrap');
     const TIMEOUT = 1200;
-    const TARGET  = './login.html';
+    const TARGET  = './private/login.html';
 
     let clicks = 0;
     let timer  = null;
