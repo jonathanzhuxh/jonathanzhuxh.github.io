@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>— JZ</title>
+  <!-- No descriptive title intentional -->
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0e0f11;
+      --card:    #14161a;
+      --border:  #252830;
+      --border2: #2e3340;
+      --muted:   #4a4f5e;
+      --body:    #9aa0b2;
+      --heading: #e8eaf0;
+      --accent:  #c8a96e;
+      --accent2: #6e8ec8;
+      --error:   #b06060;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Ambient glow */
+    .glow {
+      position: fixed; top: -20%; left: 20%;
+      width: 700px; height: 700px;
+      background: radial-gradient(ellipse, rgba(200,169,110,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .glow2 {
+      position: fixed; bottom: -15%; right: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(ellipse, rgba(110,142,200,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* ── Login card ── */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      opacity: 0;
+      animation: appear 0.7s ease 0.1s forwards;
+    }
+
+    /* Top accent line */
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(200,169,110,0.5), transparent);
+    }
+
+    /* ── Card header ── */
+    .card-header {
+      padding: 36px 36px 28px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .monogram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      margin-bottom: 20px;
+    }
+    .monogram svg { width: 36px; height: 36px; }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--heading);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .card-title em { font-style: italic; color: var(--accent); }
+
+    .card-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Card body ── */
+    .card-body {
+      padding: 28px 36px 32px;
+    }
+
+    /* Field */
+    .field {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .field-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 9px;
+      padding: 12px 44px 12px 14px;
+      color: var(--heading);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-text-security: none;
+    }
+    .field-input[type="password"] {
+      letter-spacing: 0.2em;
+    }
+    .field-input::placeholder {
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+    .field-input:focus {
+      border-color: rgba(200,169,110,0.4);
+      box-shadow: 0 0 0 3px rgba(200,169,110,0.06);
+    }
+    .field-input.error-state {
+      border-color: rgba(176,96,96,0.5);
+      box-shadow: 0 0 0 3px rgba(176,96,96,0.06);
+    }
+
+    /* Toggle password visibility */
+    .eye-btn {
+      position: absolute;
+      right: 12px; bottom: 11px;
+      background: none; border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s;
+    }
+    .eye-btn:hover { color: var(--body); }
+    .eye-btn svg { width: 16px; height: 16px; }
+
+    /* Error message */
+    .error-msg {
+      font-size: 12px;
+      color: var(--error);
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+    .error-msg.show { display: flex; }
+    .error-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--error);
+      flex-shrink: 0;
+    }
+
+    /* Submit button */
+    .btn-primary {
+      width: 100%;
+      padding: 13px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 9px;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s, opacity 0.2s;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent);
+      color: var(--bg);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .btn-primary.loading .btn-text { opacity: 0; }
+    .btn-primary .spinner {
+      display: none;
+      width: 14px; height: 14px;
+      border: 1.5px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      position: absolute;
+    }
+    .btn-primary.loading .spinner { display: block; }
+
+    /* Passkey button */
+    .btn-passkey {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: 9px;
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12.5px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-passkey:hover {
+      border-color: rgba(110,142,200,0.4);
+      color: var(--heading);
+      background: rgba(110,142,200,0.05);
+    }
+    .btn-passkey svg { width: 14px; height: 14px; }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Setup mode ── */
+    /* Visiting login.html?setup shows a hash generator */
+    .setup-panel {
+      display: none;
+      padding: 28px 36px 32px;
+      border-top: 1px solid var(--border);
+    }
+    .setup-panel.show { display: block; }
+    .setup-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 14px;
+    }
+    .setup-note {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .hash-output {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 7px;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-family: 'Courier New', monospace;
+      color: var(--accent);
+      word-break: break-all;
+      letter-spacing: 0.04em;
+      min-height: 36px;
+    }
+    .hash-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+      margin-top: 12px;
+    }
+
+    /* ── Success flash ── */
+    .success-overlay {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .success-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .success-mark {
+      width: 48px; height: 48px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="glow"></div>
+<div class="glow2"></div>
+
+<!-- Success overlay (shown briefly before redirect) -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-mark">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </div>
+</div>
+
+<div class="card" id="loginCard">
+
+  <div class="card-header">
+    <div class="monogram">
+      <!-- Reuse the favicon SVG inline -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <rect width="64" height="64" rx="14" fill="#0e0f11"/>
+        <rect width="64" height="64" rx="14" fill="none" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+        <text x="32" y="44" font-family="Georgia, serif" font-size="30" font-style="italic"
+              fill="#c8a96e" text-anchor="middle" letter-spacing="-1">JZ</text>
+      </svg>
+    </div>
+    <div class="card-title"><em>Private</em> access</div>
+    <div class="card-sub">Restricted area</div>
+  </div>
+
+  <div class="card-body" id="loginBody">
+
+    <div class="field">
+      <label class="field-label" for="pwdInput">Passphrase</label>
+      <input
+        id="pwdInput"
+        type="password"
+        class="field-input"
+        placeholder="············"
+        autocomplete="current-password"
+        spellcheck="false"
+      />
+      <button class="eye-btn" type="button" id="eyeBtn" tabindex="-1" aria-label="Toggle visibility">
+        <!-- Eye icon (closed by default since input is password) -->
+        <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+          <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+          <line x1="1" y1="1" x2="23" y2="23"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="error-msg" id="errorMsg">
+      <span class="error-dot"></span>
+      <span id="errorText">Incorrect passphrase.</span>
+    </div>
+
+    <button class="btn-primary" id="submitBtn" type="button">
+      <span class="spinner"></span>
+      <span class="btn-text">Enter</span>
+    </button>
+
+    <div class="divider">or</div>
+
+    <button class="btn-passkey" id="passkeyBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+      </svg>
+      Use Passkey
+    </button>
+
+  </div>
+
+  <!-- Setup panel — only visible on ?setup -->
+  <div class="setup-panel" id="setupPanel">
+    <div class="setup-eyebrow">Setup · Hash Generator</div>
+    <p class="setup-note">
+      Type your desired passphrase below to generate its SHA-256 hash.
+      Copy the hash and replace <code style="color:var(--accent2)">PASS_HASH</code> in the script below.
+      Remove <code style="color:var(--accent2)">?setup</code> from the URL when done.
+    </p>
+    <label class="field-label" for="setupInput">Desired passphrase</label>
+    <input id="setupInput" type="password" class="field-input" placeholder="Type your passphrase…" />
+    <div class="hash-label">SHA-256 output</div>
+    <div class="hash-output" id="hashOutput">—</div>
+  </div>
+
+</div>
+
+<script>
+  /* ════════════════════════════════════════════════════
+     CONFIGURATION
+     ─────────────────────────────────────────────────
+     PASS_HASH: SHA-256 hex of your passphrase.
+
+     HOW TO SET YOUR PASSWORD:
+       1. Open login.html?setup in your browser
+       2. Type your desired passphrase in the setup field
+       3. Copy the hash that appears
+       4. Replace the PASS_HASH value below with your hash
+       5. Deploy. Done.
+
+     DEFAULT: null → forces setup mode on first use.
+  ════════════════════════════════════════════════════ */
+  const PASS_HASH = null;
+  // Example after setup:
+  // const PASS_HASH = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3";
+
+  const PRIVATE_PAGE = './private.html';
+  const SESSION_KEY  = 'jz_auth';
+
+  /* ── Utils ── */
+  async function sha256(str) {
+    const buf  = await crypto.subtle.digest('SHA-256',
+                   new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+  }
+
+  /* ── If already authenticated, skip login ── */
+  if (sessionStorage.getItem(SESSION_KEY) === 'ok') {
+    location.replace(PRIVATE_PAGE);
+  }
+
+  /* ── Setup mode ── */
+  const isSetup = new URLSearchParams(location.search).has('setup');
+  if (isSetup || PASS_HASH === null) {
+    document.getElementById('setupPanel').classList.add('show');
+    if (PASS_HASH === null && !isSetup) {
+      // No hash configured — force setup notice in error area
+      const em = document.getElementById('errorMsg');
+      document.getElementById('errorText').textContent =
+        'No passphrase configured. See setup panel below.';
+      em.classList.add('show');
+      document.getElementById('submitBtn').disabled = true;
+      document.getElementById('passkeyBtn').disabled = true;
+    }
+  }
+
+  /* ── Setup input → live hash ── */
+  document.getElementById('setupInput').addEventListener('input', async function() {
+    const val = this.value.trim();
+    const out = document.getElementById('hashOutput');
+    if (!val) { out.textContent = '—'; return; }
+    out.textContent = 'computing…';
+    out.textContent = await sha256(val);
+  });
+
+  /* ── Eye toggle ── */
+  const pwdInput = document.getElementById('pwdInput');
+  const eyeBtn   = document.getElementById('eyeBtn');
+  const eyeIcon  = document.getElementById('eyeIcon');
+
+  const EYE_OPEN = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  const EYE_SHUT = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+  eyeBtn.addEventListener('click', () => {
+    const show = pwdInput.type === 'password';
+    pwdInput.type = show ? 'text' : 'password';
+    eyeIcon.innerHTML = show ? EYE_OPEN : EYE_SHUT;
+  });
+
+  /* ── Password submit ── */
+  const submitBtn = document.getElementById('submitBtn');
+  const errorMsg  = document.getElementById('errorMsg');
+  const errorText = document.getElementById('errorText');
+
+  async function attemptLogin() {
+    if (PASS_HASH === null) return;
+    const val = pwdInput.value;
+    if (!val) return;
+
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    errorMsg.classList.remove('show');
+    pwdInput.classList.remove('error-state');
+
+    // Small artificial delay — prevents timing attacks and feels considered
+    await new Promise(r => setTimeout(r, 320));
+
+    const hash = await sha256(val);
+
+    if (hash === PASS_HASH) {
+      sessionStorage.setItem(SESSION_KEY, 'ok');
+      // Success flash
+      document.getElementById('successOverlay').classList.add('show');
+      setTimeout(() => location.replace(PRIVATE_PAGE), 480);
+    } else {
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+      pwdInput.classList.add('error-state');
+      errorText.textContent = 'Incorrect passphrase.';
+      errorMsg.classList.add('show');
+      pwdInput.value = '';
+      pwdInput.focus();
+      // Shake animation
+      const card = document.getElementById('loginCard');
+      card.style.animation = 'shake 0.35s ease';
+      card.addEventListener('animationend', () => card.style.animation = '', { once: true });
+    }
+  }
+
+  submitBtn.addEventListener('click', attemptLogin);
+  pwdInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') attemptLogin();
+    if (pwdInput.classList.contains('error-state')) {
+      pwdInput.classList.remove('error-state');
+      errorMsg.classList.remove('show');
+    }
+  });
+
+  /* ── Passkey (WebAuthn) ── */
+  const passkeyBtn = document.getElementById('passkeyBtn');
+
+  passkeyBtn.addEventListener('click', async () => {
+    if (!window.PublicKeyCredential) {
+      errorText.textContent = 'Passkey not supported in this browser.';
+      errorMsg.classList.add('show');
+      return;
+    }
+    // WebAuthn requires HTTPS and a registered credential.
+    // On a static host (GitHub Pages, Netlify, etc.) this works after registration.
+    // For first-time setup, redirect to setup with passkey guidance.
+    errorText.textContent = 'Passkey requires prior registration on an HTTPS host.';
+    errorMsg.classList.add('show');
+    // TODO: implement full WebAuthn registration + assertion flow here
+    // when hosted at a stable HTTPS origin.
+  });
+
+  /* ── Shake keyframe (injected) ── */
+  const s = document.createElement('style');
+  s.textContent = `
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-7px); }
+      40%      { transform: translateX(7px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+  `;
+  document.head.appendChild(s);
+</script>
+
+</body>
+</html>

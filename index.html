@@ -102,7 +102,12 @@
       gap: 22px;
     }
 
-    .avatar-wrap { position: relative; flex-shrink: 0; }
+    /* Avatar wrap — this is the hidden entry point */
+    .avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+      /* No cursor:pointer — mustn't hint at interactivity */
+    }
 
     .avatar {
       width: 96px; height: 96px;
@@ -110,6 +115,8 @@
       object-fit: cover;
       border: 2.5px solid var(--accent);
       display: block;
+      user-select: none;
+      -webkit-user-drag: none;
     }
     .avatar-placeholder {
       width: 96px; height: 96px;
@@ -120,12 +127,22 @@
       color: var(--accent);
       font-family: 'DM Serif Display', serif;
       font-size: 26px;
+      user-select: none;
     }
     .avatar-ring {
       position: absolute; inset: -6px;
       border-radius: 50%;
       border: 1px solid rgba(200,169,110,0.2);
       pointer-events: none;
+      transition: border-color 0.5s ease;
+    }
+
+    /*
+      On 2nd click: ring subtly brightens — barely noticeable,
+      just enough for the person who is looking for it.
+    */
+    .avatar-wrap.primed .avatar-ring {
+      border-color: rgba(200,169,110,0.5);
     }
 
     .biz-name {
@@ -295,7 +312,7 @@
       <div class="card-shell">
 
         <div class="biz-top">
-          <div class="avatar-wrap">
+          <div class="avatar-wrap" id="avatarWrap">
             <img src="./avatar.PNG" alt="Jonathan Zhu" class="avatar"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
             <div class="avatar-placeholder" style="display:none">JZ</div>
@@ -417,6 +434,52 @@
 
   </div>
 </div>
+
+<script>
+  /*
+    ╔═══════════════════════════════════════════╗
+    ║  HIDDEN ENTRY — triple-click the avatar  ║
+    ╠═══════════════════════════════════════════╣
+    ║  · Click 1: nothing visible              ║
+    ║  · Click 2: avatar-ring subtly brightens ║
+    ║  · Click 3: navigate to login.html       ║
+    ║  · 1.2s timeout resets the counter       ║
+    ║  No cursor hint, no title, no aria-label ║
+    ╚═══════════════════════════════════════════╝
+  */
+  (function () {
+    const wrap    = document.getElementById('avatarWrap');
+    const TIMEOUT = 1200;
+    const TARGET  = './login.html';
+
+    let clicks = 0;
+    let timer  = null;
+
+    wrap.addEventListener('click', function (e) {
+      clicks++;
+
+      if (clicks === 1) {
+        timer = setTimeout(reset, TIMEOUT);
+      }
+
+      if (clicks === 2) {
+        wrap.classList.add('primed');
+      }
+
+      if (clicks >= 3) {
+        clearTimeout(timer);
+        reset();
+        window.location.href = TARGET;
+      }
+    });
+
+    function reset() {
+      clicks = 0;
+      clearTimeout(timer);
+      wrap.classList.remove('primed');
+    }
+  })();
+</script>
 
 </body>
 </html>
