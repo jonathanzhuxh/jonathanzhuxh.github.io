@@ -312,14 +312,45 @@
       letter-spacing: 0.04em;
       min-height: 36px;
     }
+    .hash-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
     .hash-label {
       font-size: 11px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 6px;
-      margin-top: 12px;
     }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: 1px solid var(--border2);
+      border-radius: 5px;
+      padding: 3px 9px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .copy-btn:hover {
+      color: var(--accent);
+      border-color: rgba(200,169,110,0.35);
+      background: rgba(200,169,110,0.05);
+    }
+    .copy-btn.copied {
+      color: #6aab7c;
+      border-color: rgba(106,171,124,0.35);
+      background: rgba(106,171,124,0.06);
+    }
+    .copy-btn svg { width: 11px; height: 11px; }
 
     /* ── Success flash ── */
     .success-overlay {
@@ -437,7 +468,15 @@
     </p>
     <label class="field-label" for="setupInput">Desired passphrase</label>
     <input id="setupInput" type="password" class="field-input" placeholder="Type your passphrase…" />
-    <div class="hash-label">SHA-256 output</div>
+    <div class="hash-label-row">
+      <div class="hash-label">SHA-256 output</div>
+      <button class="copy-btn" id="copyBtn" type="button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span id="copyLabel">Copy</span>
+      </button>
+    </div>
     <div class="hash-output" id="hashOutput">—</div>
   </div>
 
@@ -497,10 +536,34 @@
   /* ── Setup input → live hash ── */
   document.getElementById('setupInput').addEventListener('input', async function() {
     const val = this.value.trim();
-    const out = document.getElementById('hashOutput');
-    if (!val) { out.textContent = '—'; return; }
+    const out     = document.getElementById('hashOutput');
+    const copyBtn = document.getElementById('copyBtn');
+    if (!val) { out.textContent = '—'; copyBtn.disabled = true; return; }
     out.textContent = 'computing…';
-    out.textContent = await sha256(val);
+    const hash = await sha256(val);
+    out.textContent = hash;
+    copyBtn.disabled = false;
+  });
+
+  /* ── Copy hash button ── */
+  document.getElementById('copyBtn').addEventListener('click', async function () {
+    const hash = document.getElementById('hashOutput').textContent;
+    if (!hash || hash === '—' || hash === 'computing…') return;
+    try {
+      await navigator.clipboard.writeText(hash);
+      this.classList.add('copied');
+      document.getElementById('copyLabel').textContent = 'Copied!';
+      setTimeout(() => {
+        this.classList.remove('copied');
+        document.getElementById('copyLabel').textContent = 'Copy';
+      }, 2000);
+    } catch {
+      // Fallback for non-HTTPS
+      const range = document.createRange();
+      range.selectNode(document.getElementById('hashOutput'));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    }
   });
 
   /* ── Eye toggle ── */
