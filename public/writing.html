@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio — Jonathan Zhu</title>
+  <title>Writing — Jonathan Zhu</title>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,6 +21,7 @@
       --heading: #eceef3;
       --accent:  #c8a96e;
       --accent2: #6e8ec8;
+      --green:   #6aab7c;
     }
 
     html { scroll-behavior: smooth; }
@@ -109,9 +110,6 @@
     @media (min-width: 700px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (min-width: 1000px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
 
     /* ── Project card ── */
     .proj-card {
@@ -130,8 +128,6 @@
     }
     .proj-card:nth-child(1) { animation-delay: 0.15s; }
     .proj-card:nth-child(2) { animation-delay: 0.25s; }
-    .proj-card:nth-child(3) { animation-delay: 0.35s; }
-    .proj-card:nth-child(4) { animation-delay: 0.45s; }
 
     .proj-card::before {
       content: '';
@@ -143,12 +139,16 @@
     .proj-card.blue::before {
       background: linear-gradient(to right, transparent, var(--accent2), transparent);
     }
+    .proj-card.green::before {
+      background: linear-gradient(to right, transparent, var(--green), transparent);
+    }
 
     .proj-card:hover {
       border-color: var(--accent);
       transform: translateY(-3px);
     }
     .proj-card.blue:hover { border-color: var(--accent2); }
+    .proj-card.green:hover { border-color: var(--green); }
     .proj-card:hover::before { opacity: 1; }
 
     .proj-body {
@@ -156,25 +156,6 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-    }
-
-    .proj-type {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .proj-card.blue .proj-type { color: var(--accent2); }
-
-    .proj-type-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: currentColor;
-      flex-shrink: 0;
     }
 
     .proj-title {
@@ -187,6 +168,7 @@
     }
     .proj-title em { font-style: italic; color: var(--accent); }
     .proj-card.blue .proj-title em { color: var(--accent2); }
+    .proj-card.green .proj-title em { color: var(--green); }
 
     .proj-desc {
       font-size: 13.5px;
@@ -233,23 +215,10 @@
       color: var(--accent2);
       background: rgba(110,142,200,0.08);
     }
-
-    /* TBC badge */
-    .tbc-badge {
-      display: inline-block;
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: rgba(110,142,200,0.12);
-      color: var(--accent2);
-      border: 1px solid rgba(110,142,200,0.2);
-      border-radius: 3px;
-      padding: 1px 6px;
-      font-weight: 500;
-      vertical-align: middle;
-      margin-left: 8px;
-      position: relative;
-      top: -1px;
+    .proj-card.green:hover .proj-arrow {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(106,171,124,0.08);
     }
 
     @keyframes fadeUp {
@@ -277,57 +246,42 @@
 <div class="outer">
 
   <div class="page-header">
-    <h1 class="page-title">Portfolio</h1>
+    <h1 class="page-title">Writing</h1>
   </div>
 
   <div class="grid">
 
-    <!-- OD/EL -->
-    <a href="./odel-auto.html" class="proj-card blue">
+    <!-- 南洋杂记 -->
+    <a href="https://notefromnanyang.substack.com/" target="_blank" rel="noopener" class="proj-card green">
       <div class="proj-body">
-        <div class="proj-title">Build the model.<br>Change the <em>habit</em>.</div>
+        <div class="proj-title">Notes from <em>Nanyang</em></div>
         <p class="proj-desc">
-          Inheriting a broken reporting process with no documentation and no IT support — then rebuilding it by mapping the data first, automating last, and distributing cleanup across every working day rather than every month-end.
+          A notebook on Singapore — its urban planning, infrastructure, history, geography, and the logic behind how it governs itself. Up close, without the condescension that too many visitors bring.
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">OD/EL Regulatory Reporting Automation</div>
+        <div class="proj-fullname">notefromnanyang · Substack</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>
 
-    <!-- CRRA -->
-    <a href="./crra.html" class="proj-card">
+    <!-- Uphill, Downhill, Unexpected -->
+    <a href="https://neverexpected.substack.com/" target="_blank" rel="noopener" class="proj-card">
       <div class="proj-body">
-        <div class="proj-title">The system that<br><em>outlived</em> its creator</div>
+        <div class="proj-title">Uphill, Downhill, <em>Unexpected</em></div>
         <p class="proj-desc">
-          Applying Musk's five-step engineering method inside a conservative bank. Low-code tools, a clean data architecture, and a digitalization that sustains itself long after the builder has moved on. This is the story of CRRA.
+          A private history column — the past examined the way it's meant to be, on its own terms, without hindsight doing the explaining.
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">China Regulatory Reporting Automation</div>
-        <div class="proj-arrow">→</div>
-      </div>
-    </a>
-
-    <!-- This Website -->
-    <a href="../index.html" class="proj-card blue">
-      <div class="proj-body">
-        <div class="proj-title">This <em>website</em></div>
-        <p class="proj-desc">
-          A gap year spent taking stock — past projects, the road that led here, and how to
-          express it clearly. This site is the part that can be made public. Every content
-          decision, every design call, every word: made by a person. AI amplified the execution.
-          That's the point.
-        </p>
-      </div>
-      <div class="proj-footer">
-        <div class="proj-fullname">Personal Website · Built with Claude · March 2026</div>
+        <div class="proj-fullname">Uphill, Downhill, Unexpected · Substack</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>
 
   </div>
+
+</div>
 
 </body>
 </html>
