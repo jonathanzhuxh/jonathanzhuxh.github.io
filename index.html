@@ -102,11 +102,9 @@
       gap: 22px;
     }
 
-    /* Avatar wrap — this is the hidden entry point */
     .avatar-wrap {
       position: relative;
       flex-shrink: 0;
-      /* No cursor:pointer — mustn't hint at interactivity */
     }
 
     .avatar {
@@ -134,15 +132,6 @@
       border-radius: 50%;
       border: 1px solid rgba(200,169,110,0.2);
       pointer-events: none;
-      transition: border-color 0.5s ease;
-    }
-
-    /*
-      On 2nd click: ring subtly brightens — barely noticeable,
-      just enough for the person who is looking for it.
-    */
-    .avatar-wrap.primed .avatar-ring {
-      border-color: rgba(200,169,110,0.5);
     }
 
     .biz-name {
@@ -165,7 +154,6 @@
       font-weight: 500;
       color: var(--heading);
       letter-spacing: 0.02em;
-      white-space: nowrap;
     }
     .biz-title-sep {
       font-size: 11px;
@@ -312,7 +300,7 @@
       <div class="card-shell">
 
         <div class="biz-top">
-          <div class="avatar-wrap" id="avatarWrap">
+          <div class="avatar-wrap">
             <img src="./assets/avatar.png" alt="Jonathan Zhu" class="avatar"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
             <div class="avatar-placeholder" style="display:none">JZ</div>
@@ -321,11 +309,7 @@
           <div>
             <div class="biz-name">Jonathan <em>ZHU</em></div>
             <div class="biz-title">
-              <span class="biz-title-item">Data Engineer</span>
-              <span class="biz-title-sep">|</span>
-              <span class="biz-title-item">Data Modeling</span>
-              <span class="biz-title-sep">|</span>
-              <span class="biz-title-item">Regulatory Reporting</span>
+              <span class="biz-title-item">Automation Solutions and Digital Transformation Specialist</span>
             </div>
           </div>
         </div>
@@ -343,7 +327,7 @@
             <span class="biz-link-arrow">→</span>
           </a>
 
-          <a href="./assets/Jonathan_Zhu_CV_EN_202603.pdf" download class="biz-link blue">
+          <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download class="biz-link blue">
             <div class="biz-link-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="#6e8ec8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -417,7 +401,7 @@
             you. Living here takes that further — and has confirmed a suspicion I already had: much
             of what passes for commentary on Singapore is embarrassingly shallow. That gap between
             received opinion and the real thing became
-            <a href="https://substack.com/@notesfromnanyang" target="_blank" rel="noopener">Notes from Nanyang</a>
+            <a href="https://notefromnanyang.substack.com/" target="_blank" rel="noopener">Notes from Nanyang</a>
             — where I write about what I find when I look more carefully.
           </p>
           <p>
@@ -434,52 +418,6 @@
 
   </div>
 </div>
-
-<script>
-  /*
-    ╔═══════════════════════════════════════════╗
-    ║  HIDDEN ENTRY — triple-click the avatar  ║
-    ╠═══════════════════════════════════════════╣
-    ║  · Click 1: nothing visible              ║
-    ║  · Click 2: avatar-ring subtly brightens ║
-    ║  · Click 3: navigate to login.html       ║
-    ║  · 1.2s timeout resets the counter       ║
-    ║  No cursor hint, no title, no aria-label ║
-    ╚═══════════════════════════════════════════╝
-  */
-  (function () {
-    const wrap    = document.getElementById('avatarWrap');
-    const TIMEOUT = 1200;
-    const TARGET  = './private/login.html';
-
-    let clicks = 0;
-    let timer  = null;
-
-    wrap.addEventListener('click', function (e) {
-      clicks++;
-
-      if (clicks === 1) {
-        timer = setTimeout(reset, TIMEOUT);
-      }
-
-      if (clicks === 2) {
-        wrap.classList.add('primed');
-      }
-
-      if (clicks >= 3) {
-        clearTimeout(timer);
-        reset();
-        window.location.href = TARGET;
-      }
-    });
-
-    function reset() {
-      clicks = 0;
-      clearTimeout(timer);
-      wrap.classList.remove('primed');
-    }
-  })();
-</script>
 
 </body>
 </html>
