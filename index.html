@@ -122,6 +122,7 @@
     .proj-card.static::before { opacity: 1; }
     .proj-card.static:hover { border-color: var(--border); transform: none; }
     .proj-card.static.blue:hover { border-color: var(--border); }
+    .proj-card.career::before { opacity: 0; }
 
     .proj-body {
       padding: 28px 26px 20px;
@@ -148,16 +149,6 @@
       color: var(--body);
       flex: 1;
       margin-bottom: 0;
-    }
-    .proj-desc a {
-      color: var(--accent2);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(110,142,200,0.3);
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .proj-desc a:hover {
-      color: var(--heading);
-      border-bottom-color: var(--heading);
     }
 
     .proj-footer {
@@ -202,6 +193,19 @@
       color: var(--green);
       background: rgba(106,171,124,0.08);
     }
+
+    .footer-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--accent2); }
+    .footer-link .footer-link-arrow { transition: transform 0.2s; }
+    .footer-link:hover .footer-link-arrow { transform: translateX(2px); }
 
     /* ══════════════════════════
        IDENTITY CARD
@@ -298,20 +302,23 @@
     </a>
 
     <!-- ── CAREER ── -->
-    <div class="proj-card blue static">
+    <div class="proj-card blue static career">
       <div class="proj-body">
         <div class="proj-title">Career <em>Path</em></div>
         <p class="proj-desc">
           Twelve years across Citi, JPMorgan, and Standard Chartered — crossing from the business
-          side to the technical. Details on
-          <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener">LinkedIn</a>,
-          or download the
-          <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download>Résumé</a>.
+          side to the technical.
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">Citi · JPMorgan · Standard Chartered</div>
-        <div class="proj-arrow" style="opacity:0.3">·</div>
+        <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener" class="footer-link">
+          <span>LinkedIn</span>
+          <span class="footer-link-arrow">→</span>
+        </a>
+        <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download class="footer-link">
+          <span>Résumé</span>
+          <span class="footer-link-arrow">↓</span>
+        </a>
       </div>
     </div>
 
