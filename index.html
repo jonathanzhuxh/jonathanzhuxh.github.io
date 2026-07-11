@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="./assets/i18n.js"></script>
   <title>Jonathan ZHU</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,6 +26,23 @@
     }
 
     html { scroll-behavior: smooth; }
+
+    .lang-toggle {
+      position: fixed;
+      top: 20px; right: 24px;
+      z-index: 50;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 16px;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang-toggle:hover { color: var(--heading); border-color: var(--accent); }
 
     body {
       background: var(--bg);
@@ -267,10 +285,22 @@
 
     @media (max-width: 599px) {
       .outer { padding: 48px 20px 72px; }
+      .lang-toggle { top: 16px; right: 16px; }
     }
+
+    /* ── i18n (kept last so it always wins the cascade) ── */
+    .i18n-zh { display: none; }
+    html[data-lang="zh"] .i18n-en { display: none; }
+    html[data-lang="zh"] .i18n-zh { display: inline; }
+    html[data-lang="zh"] p.i18n-zh,
+    html[data-lang="zh"] div.i18n-zh { display: block; }
+    html[data-lang="zh"] a.i18n-zh,
+    html[data-lang="zh"] .footer-link.i18n-zh { display: flex; }
   </style>
 </head>
 <body>
+
+<button id="langToggle" class="lang-toggle" aria-label="Switch language">中文</button>
 
 <div class="outer">
   <div class="grid">
@@ -282,22 +312,29 @@
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
         <div class="avatar-placeholder" style="display:none">JZ</div>
         <div class="identity-name">Jonathan <em>ZHU</em></div>
-        <div class="identity-title">Automation Solutions and Digital Transformation Specialist</div>
+        <div class="identity-title i18n-en">Automation Solutions and Digital Transformation Specialist</div>
+        <div class="identity-title i18n-zh">自动化解决方案与数字化转型专家</div>
       </div>
     </div>
 
     <!-- ── ABOUT ── -->
     <a href="./public/about.html" class="proj-card">
       <div class="proj-body">
-        <div class="proj-title">My <em>Story</em></div>
-        <p class="proj-desc">
+        <div class="proj-title i18n-en">My <em>Story</em></div>
+        <div class="proj-title i18n-zh">我的<em>故事</em></div>
+        <p class="proj-desc i18n-en">
           Growing up without the internet, I learned about the world through encyclopedias, maps,
           and history books. This is where that turned into everything else — the work, the
           interests, and the move to Singapore.
         </p>
+        <p class="proj-desc i18n-zh">
+          小时候没有互联网，我靠百科全书、地图和历史书认识这个世界。这份好奇心后来延伸出了
+          我的工作、我的兴趣，以及后来举家搬到新加坡的决定。
+        </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">Read the full story</div>
+        <div class="proj-fullname i18n-en">Read the full story</div>
+        <div class="proj-fullname i18n-zh">阅读完整故事</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>
@@ -305,10 +342,14 @@
     <!-- ── CAREER ── -->
     <div class="proj-card blue static career">
       <div class="proj-body">
-        <div class="proj-title">Career <em>Path</em></div>
-        <p class="proj-desc">
+        <div class="proj-title i18n-en">Career <em>Path</em></div>
+        <div class="proj-title i18n-zh">职业<em>经历</em></div>
+        <p class="proj-desc i18n-en">
           Twelve years across Citi, JPMorgan, and Standard Chartered — crossing from the business
           side to the technical.
+        </p>
+        <p class="proj-desc i18n-zh">
+          十二年间辗转花旗、摩根大通与渣打银行，从业务岗位一路跨界走到技术岗位。
         </p>
       </div>
       <div class="proj-footer">
@@ -316,8 +357,12 @@
           <span>LinkedIn</span>
           <span class="footer-link-arrow">→</span>
         </a>
-        <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download class="footer-link">
+        <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download class="footer-link i18n-en">
           <span>Résumé</span>
+          <span class="footer-link-arrow">↓</span>
+        </a>
+        <a href="./assets/Jonathan_Zhu_CV_ZH_202607.pdf" download class="footer-link i18n-zh">
+          <span>简历</span>
           <span class="footer-link-arrow">↓</span>
         </a>
       </div>
@@ -326,13 +371,19 @@
     <!-- ── PORTFOLIO: OD/EL ── -->
     <a href="./public/odel-auto.html" class="proj-card blue">
       <div class="proj-body">
-        <div class="proj-title">Build the model.<br>Change the <em>habit</em>.</div>
-        <p class="proj-desc">
+        <div class="proj-title i18n-en">Build the model.<br>Change the <em>habit</em>.</div>
+        <div class="proj-title i18n-zh">先搭模型，<br>再改<em>习惯</em>。</div>
+        <p class="proj-desc i18n-en">
           Inheriting a broken reporting process with no documentation and no IT support — then rebuilding it by mapping the data first, automating last, and distributing cleanup across every working day rather than every month-end.
+        </p>
+        <p class="proj-desc i18n-zh">
+          接手一个既无文档也无 IT 支持、早已失控的报送流程——先把数据结构梳理清楚，最后才做自动化，
+          并把清理工作分摊到每个工作日，而不是集中在月末。
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">OD/EL Regulatory Reporting Automation</div>
+        <div class="proj-fullname i18n-en">OD/EL Regulatory Reporting Automation</div>
+        <div class="proj-fullname i18n-zh">OD/EL 监管报送自动化</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>
@@ -340,13 +391,19 @@
     <!-- ── PORTFOLIO: CRRA ── -->
     <a href="./public/crra.html" class="proj-card">
       <div class="proj-body">
-        <div class="proj-title">The system that<br><em>outlived</em> its creator</div>
-        <p class="proj-desc">
+        <div class="proj-title i18n-en">The system that<br><em>outlived</em> its creator</div>
+        <div class="proj-title i18n-zh">比缔造者更<br><em>长寿</em>的系统</div>
+        <p class="proj-desc i18n-en">
           Applying Musk's five-step engineering method inside a conservative bank. Low-code tools, a clean data architecture, and a digitalization that sustains itself long after the builder has moved on. This is the story of CRRA.
+        </p>
+        <p class="proj-desc i18n-zh">
+          在一家保守的银行里应用马斯克的五步工程法。低代码工具、干净的数据架构，以及一套在建造者离开后
+          依然能自行运转的数字化方案。这就是 CRRA 的故事。
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">China Regulatory Reporting Automation</div>
+        <div class="proj-fullname i18n-en">China Regulatory Reporting Automation</div>
+        <div class="proj-fullname i18n-zh">中国监管报送自动化（CRRA）</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>
@@ -354,13 +411,19 @@
     <!-- ── WRITING: Notes from Nanyang ── -->
     <a href="https://notefromnanyang.substack.com/" target="_blank" rel="noopener" class="proj-card green">
       <div class="proj-body">
-        <div class="proj-title">Notes from <em>Nanyang</em></div>
-        <p class="proj-desc">
+        <div class="proj-title i18n-en">Notes from <em>Nanyang</em></div>
+        <div class="proj-title i18n-zh">南洋<em>杂记</em></div>
+        <p class="proj-desc i18n-en">
           A notebook on Singapore — its urban planning, infrastructure, history, geography, and the logic behind how it governs itself. Up close, without the condescension that too many visitors bring.
+        </p>
+        <p class="proj-desc i18n-zh">
+          一本关于新加坡的笔记——城市规划、基础设施、历史、地理，以及这个国家治理自己的逻辑。
+          近距离观察，不带太多访客常有的那种俯视感。
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">Notes from Nanyang · Substack</div>
+        <div class="proj-fullname i18n-en">Notes from Nanyang · Substack</div>
+        <div class="proj-fullname i18n-zh">南洋杂记 · Substack</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>
@@ -368,13 +431,18 @@
     <!-- ── WRITING: Uphill, Downhill, Unexpected ── -->
     <a href="https://neverexpected.substack.com/" target="_blank" rel="noopener" class="proj-card">
       <div class="proj-body">
-        <div class="proj-title">Uphill, Downhill, <em>Unexpected</em></div>
-        <p class="proj-desc">
+        <div class="proj-title i18n-en">Uphill, Downhill, <em>Unexpected</em></div>
+        <div class="proj-title i18n-zh">上坡，下坡，<em>意外</em></div>
+        <p class="proj-desc i18n-en">
           A private history column — the past examined the way it's meant to be, on its own terms, without hindsight doing the explaining.
+        </p>
+        <p class="proj-desc i18n-zh">
+          一个私人的历史专栏——按它本来的样子去审视过去，用它自己的逻辑，而不是用后见之明去解释一切。
         </p>
       </div>
       <div class="proj-footer">
-        <div class="proj-fullname">Uphill, Downhill, Unexpected · Substack</div>
+        <div class="proj-fullname i18n-en">Uphill, Downhill, Unexpected · Substack</div>
+        <div class="proj-fullname i18n-zh">上坡，下坡，意外 · Substack</div>
         <div class="proj-arrow">→</div>
       </div>
     </a>

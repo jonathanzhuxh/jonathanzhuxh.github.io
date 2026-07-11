@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../assets/i18n.js"></script>
   <title>About — Jonathan Zhu</title>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -127,10 +128,37 @@
     @media (max-width: 599px) {
       .outer { padding: 36px 20px 72px; }
       .nav { padding: 24px 20px 0; }
+      .lang-toggle { top: 16px; right: 16px; }
     }
+
+    .lang-toggle {
+      position: fixed;
+      top: 20px; right: 24px;
+      z-index: 50;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 16px;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang-toggle:hover { color: var(--heading); border-color: var(--accent); }
+
+    /* ── i18n (kept last so it always wins the cascade) ── */
+    .i18n-zh { display: none; }
+    html[data-lang="zh"] .i18n-en { display: none; }
+    html[data-lang="zh"] .i18n-zh { display: inline; }
+    html[data-lang="zh"] p.i18n-zh,
+    html[data-lang="zh"] div.i18n-zh { display: block; }
   </style>
 </head>
 <body>
+
+<button id="langToggle" class="lang-toggle" aria-label="Switch language">中文</button>
 
 <div class="nav">
   <a href="../index.html" class="nav-back">
@@ -144,11 +172,13 @@
 <div class="outer">
 
   <div class="page-header">
-    <div class="page-eyebrow">About Me</div>
-    <h1 class="page-title">My <em>Story</em></h1>
+    <div class="page-eyebrow i18n-en">About Me</div>
+    <div class="page-eyebrow i18n-zh">关于我</div>
+    <h1 class="page-title i18n-en">My <em>Story</em></h1>
+    <h1 class="page-title i18n-zh">我的<em>故事</em></h1>
   </div>
 
-  <div class="about-body">
+  <div class="about-body i18n-en">
     <p>
       Hi, I'm Jonathan ZHU. Nice to meet you.
     </p>
@@ -199,6 +229,12 @@
       The story, the taste, the final call on what matters — those still belong to the person.
       But AI amplifies. The clearer you can think and express yourself, the greater the
       leverage it gives you.
+    </p>
+  </div>
+
+  <div class="about-body i18n-zh">
+    <p>
+      中文版本正在准备中，敬请期待。
     </p>
   </div>
 
