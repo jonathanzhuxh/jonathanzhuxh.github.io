@@ -149,6 +149,16 @@
       flex: 1;
       margin-bottom: 0;
     }
+    .proj-desc a {
+      color: var(--accent2);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(110,142,200,0.3);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .proj-desc a:hover {
+      color: var(--heading);
+      border-bottom-color: var(--heading);
+    }
 
     .proj-footer {
       padding: 16px 26px 22px;
@@ -245,56 +255,6 @@
       max-width: 220px;
     }
 
-    /* ══════════════════════════
-       CAREER CARD
-    ══════════════════════════ */
-    .career-links {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 0 14px 18px;
-    }
-
-    .mini-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 10px 10px 8px;
-      border-radius: 9px;
-      text-decoration: none;
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--body);
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-    }
-    .mini-link:hover {
-      background: var(--card-hi);
-      border-color: var(--border);
-      color: var(--heading);
-    }
-    .mini-link-icon {
-      width: 28px; height: 28px;
-      border-radius: 7px;
-      background: rgba(255,255,255,0.06);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .mini-link:hover .mini-link-icon { background: rgba(200,169,110,0.12); }
-    .mini-link.blue:hover .mini-link-icon { background: rgba(110,142,200,0.1); }
-    .mini-link-icon svg { width: 13px; height: 13px; }
-    .mini-link-label { flex: 1; }
-    .mini-link-arrow {
-      font-size: 12px;
-      color: var(--muted);
-      opacity: 0;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .mini-link:hover .mini-link-arrow { opacity: 1; transform: translateX(2px); }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -340,35 +300,18 @@
     <!-- ── CAREER ── -->
     <div class="proj-card blue static">
       <div class="proj-body">
-        <div class="proj-title">Career</div>
+        <div class="proj-title">Career <em>Path</em></div>
         <p class="proj-desc">
           Twelve years across Citi, JPMorgan, and Standard Chartered — crossing from the business
-          side to the technical.
+          side to the technical. Details on
+          <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener">LinkedIn</a>,
+          or download the
+          <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download>Résumé</a>.
         </p>
       </div>
-      <div class="career-links">
-        <a href="https://www.linkedin.com/in/jonathan-zhu-436142367/" target="_blank" rel="noopener" class="mini-link">
-          <div class="mini-link-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#c8a96e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-              <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
-            </svg>
-          </div>
-          <span class="mini-link-label">LinkedIn</span>
-          <span class="mini-link-arrow">→</span>
-        </a>
-        <a href="./assets/Jonathan_Zhu_CV_EN_202607.pdf" download class="mini-link blue">
-          <div class="mini-link-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#6e8ec8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="12" y1="18" x2="12" y2="12"/>
-              <polyline points="9 15 12 18 15 15"/>
-            </svg>
-          </div>
-          <span class="mini-link-label">Résumé</span>
-          <span class="mini-link-arrow">↓</span>
-        </a>
+      <div class="proj-footer">
+        <div class="proj-fullname">Citi · JPMorgan · Standard Chartered</div>
+        <div class="proj-arrow" style="opacity:0.3">·</div>
       </div>
     </div>
 
