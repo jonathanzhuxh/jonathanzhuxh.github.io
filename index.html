@@ -117,12 +117,11 @@
     .proj-card.green:hover { border-color: var(--green); }
     .proj-card:hover::before { opacity: 1; }
 
-    /* Static (non-clickable) cards keep the accent line on, no hover lift */
+    /* Static (non-clickable) cards: no hover lift, no accent line */
     .proj-card.static { cursor: default; }
-    .proj-card.static::before { opacity: 1; }
     .proj-card.static:hover { border-color: var(--border); transform: none; }
     .proj-card.static.blue:hover { border-color: var(--border); }
-    .proj-card.career::before { opacity: 0; }
+    .proj-card.static:hover::before { opacity: 0; }
 
     .proj-body {
       padding: 28px 26px 20px;
