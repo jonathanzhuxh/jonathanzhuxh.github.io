@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="../assets/i18n.js"></script>
   <title>About — Jonathan Zhu</title>
+  <meta name="description" content="How did an introverted kid who grew up obsessed with maps end up here? Jonathan Zhu, born in Shanghai in 1989, now living in Singapore." />
+  <link rel="canonical" href="https://jonathanzhuxh.github.io/public/about.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="About — Jonathan Zhu" />
+  <meta property="og:description" content="How did an introverted kid who grew up obsessed with maps end up here? Jonathan Zhu, born in Shanghai in 1989, now living in Singapore." />
+  <meta property="og:url" content="https://jonathanzhuxh.github.io/public/about.html" />
+  <meta property="og:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="About — Jonathan Zhu" />
+  <meta name="twitter:description" content="How did an introverted kid who grew up obsessed with maps end up here? Jonathan Zhu, born in Shanghai in 1989, now living in Singapore." />
+  <meta name="twitter:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +26,7 @@
     :root {
       --bg:      #0e0f11;
       --border:  #2e3340;
-      --muted:   #6b7280;
+      --muted:   #9ca3af;
       --body:    #c4c9d6;
       --heading: #eceef3;
       --accent:  #c8a96e;
@@ -154,6 +165,12 @@
     html[data-lang="zh"] .i18n-zh { display: inline; }
     html[data-lang="zh"] p.i18n-zh,
     html[data-lang="zh"] div.i18n-zh { display: block; }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .page-header, .about-body { opacity: 1 !important; transform: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -202,7 +219,7 @@
       Outside of work, my interests are all over the place. History, politics, and geography
       run deep in me — I especially like obscure, cross-disciplinary topics, like the history
       of China's administrative divisions. I'm also a geek: phones, computers, rooting and
-      flashing everything I could get my hands on, a hobby I only "retired" from in my forties.
+      flashing everything I could get my hands on, a hobby I only "retired" from in my thirties.
       I'm a railway enthusiast too, and once spent half a month crossing Russia on the
       Trans-Siberian Railway. I've followed F1 and basketball for over a decade — more interested in the
       data and the tactics than the raw speed and adrenaline. I grew up on J-pop and followed

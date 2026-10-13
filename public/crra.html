@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRRA — Jonathan Zhu</title>
+  <meta name="description" content="A case study in sustainable digitalisation: rebuilding a bank's China regulatory reporting infrastructure, from fragmented spreadsheets to a unified data model serving two regulators." />
+  <link rel="canonical" href="https://jonathanzhuxh.github.io/public/crra.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="CRRA — Jonathan Zhu" />
+  <meta property="og:description" content="A case study in sustainable digitalisation: rebuilding a bank's China regulatory reporting infrastructure, from fragmented spreadsheets to a unified data model serving two regulators." />
+  <meta property="og:url" content="https://jonathanzhuxh.github.io/public/crra.html" />
+  <meta property="og:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CRRA — Jonathan Zhu" />
+  <meta name="twitter:description" content="A case study in sustainable digitalisation: rebuilding a bank's China regulatory reporting infrastructure, from fragmented spreadsheets to a unified data model serving two regulators." />
+  <meta name="twitter:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +26,7 @@
       --bg:      #0e0f11;
       --surface: #16181c;
       --border:  #252830;
-      --muted:   #4a4f5e;
+      --muted:   #80869a;
       --body:    #9aa0b2;
       --heading: #e8eaf0;
       --accent:  #c8a96e;
@@ -522,6 +533,12 @@
     }
     footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     footer a:hover { color: var(--accent); }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .hero-eyebrow, .hero-title, .hero-subtitle, .hero-stats { opacity: 1 !important; transform: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -626,7 +643,6 @@
           They were replaced with six standardised configuration tables. Not because six
           is better than twelve, but because most of those spreadsheets existed to compensate
           for problems fixable upstream, or edge cases that had stopped occurring years ago.
-          <div class="step-lesson">Workarounds accumulate faster than problems get solved. Deletion requires courage, not just analysis.</div>
           <div class="step-lesson">Workarounds accumulate faster than problems get solved. Deletion requires courage, not just analysis.</div>
         </div>
       </div>

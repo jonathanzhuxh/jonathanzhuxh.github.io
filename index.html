@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="./assets/i18n.js"></script>
   <title>Jonathan ZHU</title>
+  <meta name="description" content="Jonathan ZHU — Automation Solutions and Digital Transformation Specialist. Projects, career and personal story." />
+  <link rel="canonical" href="https://jonathanzhuxh.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Jonathan ZHU" />
+  <meta property="og:description" content="Jonathan ZHU — Automation Solutions and Digital Transformation Specialist. Projects, career and personal story." />
+  <meta property="og:url" content="https://jonathanzhuxh.github.io/" />
+  <meta property="og:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Jonathan ZHU" />
+  <meta name="twitter:description" content="Jonathan ZHU — Automation Solutions and Digital Transformation Specialist. Projects, career and personal story." />
+  <meta name="twitter:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +28,7 @@
       --card:    #1a1d24;
       --card-hi: #21252e;
       --border:  #2e3340;
-      --muted:   #6b7280;
+      --muted:   #9ca3af;
       --body:    #c4c9d6;
       --heading: #eceef3;
       --accent:  #c8a96e;
@@ -294,6 +305,12 @@
     html[data-lang="zh"] div.i18n-zh { display: block; }
     html[data-lang="zh"] a.i18n-zh,
     html[data-lang="zh"] .footer-link.i18n-zh { display: flex; }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .proj-card { opacity: 1 !important; transform: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -306,8 +323,11 @@
     <!-- ── IDENTITY ── -->
     <div class="proj-card static">
       <div class="identity-body">
-        <img src="./assets/avatar.png" alt="Jonathan Zhu" class="avatar"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <picture>
+          <source srcset="./assets/avatar.webp" type="image/webp" />
+          <img src="./assets/avatar.jpg" alt="Jonathan Zhu" class="avatar" width="88" height="88"
+             onerror="this.style.display='none';this.parentNode.nextElementSibling.style.display='flex'" />
+        </picture>
         <div class="avatar-placeholder" style="display:none">JZ</div>
         <div class="identity-name">Jonathan <em>ZHU</em></div>
         <div class="identity-title i18n-en">Automation Solutions and Digital Transformation Specialist</div>

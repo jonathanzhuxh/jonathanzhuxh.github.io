@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OD/EL Reporting Automation — Jonathan Zhu</title>
+  <meta name="description" content="Inheriting a broken regulatory reporting process with no documentation or SOP, then rebuilding it from first principles during a COVID lockdown, with no IT support and no budget." />
+  <link rel="canonical" href="https://jonathanzhuxh.github.io/public/odel-auto.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="OD/EL Reporting Automation — Jonathan Zhu" />
+  <meta property="og:description" content="Inheriting a broken regulatory reporting process with no documentation or SOP, then rebuilding it from first principles during a COVID lockdown, with no IT support and no budget." />
+  <meta property="og:url" content="https://jonathanzhuxh.github.io/public/odel-auto.html" />
+  <meta property="og:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="OD/EL Reporting Automation — Jonathan Zhu" />
+  <meta name="twitter:description" content="Inheriting a broken regulatory reporting process with no documentation or SOP, then rebuilding it from first principles during a COVID lockdown, with no IT support and no budget." />
+  <meta name="twitter:image" content="https://jonathanzhuxh.github.io/assets/avatar.jpg" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +26,7 @@
       --bg:      #0e0f11;
       --surface: #16181c;
       --border:  #252830;
-      --muted:   #4a4f5e;
+      --muted:   #80869a;
       --body:    #9aa0b2;
       --heading: #e8eaf0;
       --accent:  #c8a96e;
@@ -549,6 +560,12 @@
     }
     footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     footer a:hover { color: var(--accent); }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .hero-eyebrow, .hero-title, .hero-subtitle, .hero-stats { opacity: 1 !important; transform: none !important; }
+    }
   </style>
 </head>
 <body>
